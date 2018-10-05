@@ -1,0 +1,941 @@
+
+
+=================================================================
+                         Turbo Editor-Makros
+=================================================================
+
+
+-----------------------------------------------------------------
+                               Inhalt
+-----------------------------------------------------------------
+ 1. Operationen
+ 2. Die Syntax der Editor-Sprache
+ 3. Beispielmakros
+     MakeFuncText
+     MakeStub
+ 4. Die integrierten Makro-Kommandos
+     Makro-Kommandos nach Funktionsbereichen
+      Block-Makros
+      Lîschen/EinfÅgen
+      Such-Makros
+      TastenkÅrzel-Makros
+      Bildschirm-Makros
+      System-Makros
+     Alphabetische Referenz aller Makro-Kommandos
+ 5. Fehlermeldungen
+-----------------------------------------------------------------
+
+Mit der Makro-Sprache des Turbo Editors (ØTurbo Editor 
+Macro LanguageÆ - TEML) steht Ihnen ein mÑchtiges 
+Zusatzinstrument zum Erweitern oder éndern des IDE-Editors 
+zur VerfÅgung.
+Mit Hilfe der 140 eingebauten Makros kînnen Sie neue Makros 
+mit komplexen Aufgaben definieren und Tasten bzw.
+Tastenkombinationen zuordnen.
+Anmerkung: Die SetReturnCode-Makros sind mit einem 
+Sternchen markiert (*).
+Diese besonderen Makros liefern einen Ergebniscode beim Beenden.
+Ein Befehl nach einem SetReturnCode-Makro ergibt einen Fehler.
+
+================
+ 1. Operationen
+================
+
+Wenn Sie TEML verwenden, sollten Sie das Makro-Script zuerst 
+in einem Text-Editor schreiben.
+Compilieren Sie dann das Script mit dem Turbo Editor 
+Makro-Compiler (TEMC). Die compilierte Datei wird von der IDE 
+von Turbo Pascal als Konfigurationsdatei verwendet.
+
+Der Makro-Compiler von Turbo Editor erwartet als Eingabe 
+eine ASCII-Datei mit Definitionen und Zuordnungen, die sich 
+an die TEML-Spezifikation anpassen. Die Ausgabe erfolgt in 
+einer Konfigurationsdatei, die die IDE verwenden kann. 
+Die énderungen der TEML sind inkrementell, d.h. wenn Sie 
+eben eine Definition einer Taste geÑndert haben, wird 
+nur diese Taste in der Konfigurationsdatei geÑndert. 
+
+Syntax der Turbo-Editor-Makro-Sprache:
+
+   TEMC scriptfile outputconfigfile
+
+Der Text-Editor, den Sie zum Erstellen der ASCII-scriptfile
+verwenden, ist freigestellt. Verwenden Sie outputconfigfile, 
+wenn Sie den Namen TPCONFIG.TP vergeben und in das Verzeichnis
+speichern, von dem aus Sie TURBO.EXE aufrufen.
+
+
+=======================================
+ 2. Die Syntax der Editor-Makro-Sprache
+=======================================
+
+Die Syntax von TEML ist einfach und der von Pascal und C 
+Ñhnlich. Die grundlegenden Regeln der Syntax der 
+Makrosprache sind:
+
+Anweisungen in einer Script-Datei werden durch einen 
+Strichpunkt getrennt.
+
+Die fÅr TEML reservierten Wîrter sind:
+       ALT       BEGIN
+       CTRL      END
+       MACRO     SCRIPT
+       SHIFT
+
+Kommentare werden wie in C zwischen /* und */ eingegeben.
+
+In Strings kînnen gÅltige Escape-Sequenzen stehen, z.B. Ø\xDÆ.
+
+Im weiteren Teil des Kapitels finden Sie eine Beschreibung, 
+wie jede mîgliche Komponente der Syntax in das Arbeitsschema 
+pa·t. In dieser Liste bedeutet das Symbol ::=, da· das Objekt 
+auf der linken Seite den Objekten auf der rechten Seite 
+zugeordnet wird. Beginnt die Liste auf der rechten Seite von ::
+mit dem Symbol |, kann das Objekt auf der linken Seite 
+wegfallen oder eines der aufgelisteten Elemente enthalten.
+
+Script                ::=   ScriptName ScriptElemente
+ScriptName            ::=   |
+                            SCRIPTBezeichner;
+ScriptElemente        ::=   |
+                            ScriptElemente ScriptElement
+ScriptElement         ::=   TasteZuweisung | MakroDefinition
+TasteZuweisung        ::=   TasteFolge : Kommando;
+TasteFolge            ::=   TasteSpezifizierer | TasteFolge +
+                            TasteSpezifizierer | TasteFolge +
+                            ^TasteSpezifizierer
+TasteSpezifizierer    ::=  Taste | TasteModifizierer Taste
+Taste                 ::=   Zahl | Bezeichner | END
+TasteModifizierer     ::=  | CTRL- | ALT- | SHIFT-
+Kommando              ::=  BEGIN KommandoListe OptStrichpunkt END | 
+                           MakroKommando
+KommandoListe         ::=  Kommando | KommandoListe; Kommando
+MakroKommando         ::=  KommandoName |
+                           KommandoName(ParamListe)
+KommandoName          ::=  Bezeichner
+ParameterListe        ::=  Parameter |
+                           ParameterListe,Parameter
+Parameter             ::=  Zahl | String
+Script                ::=  ScriptName ScriptElemente
+MakroDefinition       ::=  MAKRO KommandoName KommandoListe
+                           OptStrichpunkt END;
+OptStrichpunkt        ::=  | ;
+Zahl                  ::=  Ziffer | Zahl Ziffer
+Ziffer                ::=  0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+Bezeichner            ::=  Buchstabe | Bezeichner BuchstabeZiffer
+Buchstabe             ::=  A bis Z | a bis z | _
+BuchstabeZiffer       ::=  Buchstabe | Ziffer
+String                ::=  "Jedes Zeichen au·er AnfÅhrungszeichen"
+
+
+====================
+ 3. Beispielmakros
+====================
+
+Dieses Beispiel erstellt eine Reihe WordStar-Ñhnlicher
+TastenkÅrzel:
+
+
++--------------------------------------------------------------------+
+|   Script WordStar;                                                 |
+|                                                                    |
+|                                                                    |
+|    Macro NewLine                                                   |
+|    RightOfLine;                                                    |
+|    InsertText("\xD");                                              |
+|    End;                                                            |
+|                                                                    |
+|    /* TastenkÅrzel */                                              |
+|    Ctrl-A      : WordLeft;                                         |
+|    Ctrl-C      : PageDown;                                         |
+|    Ctrl-D      : CursorCharRight;                                  |
+|    Ctrl-E      : CursorUp;                                         |
+|    Ctrl-F      : WordRight;                                        |
+|    Ctrl-G      : DeleteChar;                                       |
+|    Ctrl-H      : BackSpaceDelete;                                  |
+|    Ctrl-J      : CursorDown;                                       |
+|    Ctrl-K+^B   : SetBlockBeg;                                      |
+|    Ctrl-K+^C   : CopyBlock;                                        |
+|    Ctrl-K+^H   : ToggleHideBlock;                                  |
+|    Ctrl-K+^K   : SetBlockEnd;                                      |
+|    Ctrl-K+^Q   : Exit;                                             |
+|    Ctrl-K+^R   : ReadBlock;                                        |
+|    Ctrl-K+^V   : MoveBlock;                                        |
+|    Ctrl-K+^W   : WriteBlock;                                       |
+|    Ctrl-K+^Y   : DeleteBlock;                                      |
+|    Ctrl-K+1    : SetMark(1);                                       |
+|    Ctrl-K+2    : SetMark(2);                                       |
+|    Ctrl-K+3    : SetMark(3);                                       |
+|    Ctrl-L      : RepeatSearch;                                     |
+|    Ctrl-N      : BreakLine;                                        |
+|    Ctrl-O      : NewLine;   /* kein WordStar-TastenkÅrzel */
+|
+|    Ctrl-P      : LiteralChar;                                      |
+|    Ctrl-Q+^A   : Replace;                                          |
+|    Ctrl-Q+^B   : MoveToBlockBeg;                                   |
+|    Ctrl-Q+^C   : EndCursor;                                        |
+|    Ctrl-Q+^D   : RightOfLine;                                      |
+|    Ctrl-Q+^E   : TopOfScreen;                                      |
+|    Ctrl-Q+^F   : GetFindString;                                    |
+|    Ctrl-Q+^K   : MoveToBlockEnd;                                   |
+|    Ctrl-Q+^P   : MoveToPrevPos;                                    |
+|    Ctrl-Q+^R   : HomeCursor;                                       |
+|    Ctrl-Q+^S   : LeftOfLine;                                       |
+|    Ctrl-Q+^X   : BottomOfScreen;                                   |
+|    Ctrl-Q+^Y   : DeleteToEol;                                      |
+|    Ctrl-Q+1    : begin                                             |
+|                  MoveToMark(1);                                    |
+|                  CenterFixScreenPos;                               |
+|                end;                                                |
+|                                                                    |
+|  Ctrl-Q+2    : begin                                               |
+|                  MoveToMark(2);                                    |
+|                  CenterFixScreenPos;                               |
+|                end;                                                |
+|  Ctrl-Q+3    : begin                                               |
+|                  MoveToMark(3);                                    |
+|                  CenterFixScreenPos;                               |
+|                end;                                                |
+|  Ctrl-R      : PageUp;                                             |
+|  Ctrl-S      : CursorCharLeft;                                     |
+|  Ctrl-T      : DeleteWord;                                         |
+|  Ctrl-V      : ToggleInsert;                                       |
+|  Ctrl-W      : ScrollDown;                                         |
+|  Ctrl-X      : CursorDown;                                         |
+|  Ctrl-Y      : DeleteLine;                                         |
+|  Ctrl-Z      : ScrollUp;                                           |
+|  Home        : LeftOfLine;                                         |
+|  UpAr        : CursorUp;                                           |
+|  PgUp        : PageUp;                                             |
+|  LfAr        : CursorCharLeft;                                     |
+|  RgAr        : CursorCharRight;                                    |
+|  End         : RightOfLine;                                        |
+|  DnAr        : CursorDown;                                         |
+|  PgDn        : PageDown;                                           |
+|  Ins         : ToggleInsert;                                       |
+|  Ctrl-End    : BottomOfScreen;                                     |
+|  Ctrl-PgDn   : EndCursor;                                          |
+|  Ctrl-Home   : TopOfScreen;                                        |
+|  Ctrl-PgUp   : HomeCursor;                                         |
++--------------------------------------------------------------------+
+
+ MakeFuncText
+==============
+
+In MakeFuncText wird ein kommentierter Bereich fÅr einen Text, 
+der eine Funktion beschreibt, reserviert. Der Cursor mu· sich dabei 
+direkt hinter dem Namen befinden, der Name links am Bildschirm.
+
++--------------------------------------------------------------------+
+|                                                                    |
+|   Script util;                                                     |
+|                                                                    |
+|   macro MakeFuncText                                               |
+|  InsertText("\n\n");          /* Leerplatz einfÅgen*/              |
+|    CursorUp;                                                       |
+|    CursorUp;                                                       |
+|    LeftOfLine;                /* gehe vor den Anfang des           |
+|                                  gewÑhlten Funktionsnamens */      |
+|    SetBlockBeg;               /* markiere Funktionsname*/          |
+|    WordRight;                                                      |
+|    SetBlockEnd;                                                    |
+|    LeftOfLine;                                                     |
+|    CursorDown;                                                     |
+|    CopyBlockRaw;              /* Kopiere fÅr prototyping */        |
+|    CursorUp;                                                       |
+|    LeftOfLine;                                                     |
+|    InsertText("\nFunction "); /* fÅge "Funktion" in den            |                                Kommentarbereich ein*/              |
+|    RightOfLine;                                                    |
+|    InsertText(":");           /* .. und Doppelpunkt ans Ende */    |
+|    CursorUp;                  /* gib vorher und danach             |
+                                   Kommentarzeilen ein */            |
+|    LeftOfLine;         /* Kommentarbegrenzungszeilen einfÅgen */   |
+|    InsertText("/*********");                                       |
+|    InsertText("*********");                                        |
+|    CursorDown;                                                     |
+|    RightOfLine;                                                    |
+|    InsertText("\n");                                               |
+|    InsertText("\tDescription:\n");                                 |
+|    InsertText("**********");                                       |
+|    InsertText("*********/\n");                                     |
+|    CursorDown;                 /* gehe zurÅck zum Namensende */    |
+|    RightOfLine;                                                    |
+|   end;                         /* MakeFuncText */                  |
+|                                                                    |
+|                                                                    |
+|   Alt-T        : MakeFuncText;                                     |
+|                                                                    |
++--------------------------------------------------------------------+
+
+ MakeStub
+==========
+
+MakeStup erstellt eine ØDummyÆ-Funktion, die sich auf einen
+Funktionsnamen, den ein Anwender eingegeben hat, bezieht. 
+Der Cursor mu· dabei direkt hinter dem Namen und der Name 
+links am Bildschirm stehen.
+
++--------------------------------------------------------------------+
+|                                                                    |
+|   macro MakeStub                                                   |
+|    LeftOfLine;                 /* gehe vor Anfang des              |
+|                                   gewÑhlten Funktionsnamen */      |
+|    InsertText("void ");        /* gib void return Typ und          |
+|                                   Parameter ein */                 |
+|    RightOfLine;                                                    |
+|    InsertText("( void )\n{\n");                                    |
+|    InsertText("\t");                                               |
+|    InsertText("printf(\"This is "); /* starte printf Anweisung*/   |
+|    CursorUp;                   /* gehe zurÅck zum Funktionsnamen */|
+|    CursorUp;                                                       |
+|    LeftofLine;                                                     |
+|    WordRight;                                                      |
+|    SetBlockBeg;                /* markiere Funktionsnamen */       |
+|    WordRight;                                                      |
+|    CursorLeft;                                                     |
+|    CursorLeft;                                                     |
+|    SetBlockEnd;                                                    |
+|    CursorDown;                 /* zurÅck zu printf */              |
+|    CursorDown;                                                     |
+|    RightofLine;                                                    |
+|    InsertText(" ");                                                |
+|    CopyBlockRaw;               /* in die printf Anweisung */       |
+|    SetBlockBeg;                                                    |
+|    SetBlockEnd;                /* lîsche markierten Block */       |
+|    RightofLine;                                                    |
+|    InsertText("\\n\");");                                          |
+|    InsertText("\n}");          /* neue Zeile und schlie·ende       |
+|                                   Klammer eingeben */              |
+|   end;                         /* MakeStub */                      |
+|                                                                    |
+|                                                                    |
+|   Alt-S       : MakeStub;                                          |
+|                                                                    |
+|   /* Dies widerspricht den voreingestellten Zuweisungen nicht */   |
+|                                                                    |
++--------------------------------------------------------------------+
+
+
+====================================
+ 3. Die integrierten Makro-Kommandos
+====================================
+
+Aus den Namen der integrierten Makro-Kommandos kînnen Sie 
+auf deren Funktionen schlie·en. Kommandos, die das Wort 
+screen enthalten, betreffen beispielsweise den Bildschirm.
+
+Kommandos, die raw enthalten, mÅssen sich  weniger als ihre 
+Øraw-losenÆ GegenstÅcke um die Bildschirmanzeige, die letzte
+Cursorposition etc. kÅmmern. In langen Makros sparen Sie Zeit,
+wenn Sie raw-Kommandos verwenden, da die Bildschirmanzeige fÅr 
+die énderung der Cursorposition, das Markiern von Blîcken etc.
+nicht stÑndig neu aufgebaut werden mu·.
+
+Die raw-Makros werden meist als Zwischenschritte in Kombination
+mit anderen Makros verwendet.
+Auf Klein- und Gro·buchstaben brauchen Sie bei Makro-Namen nicht
+zu achten. Einige Makros benîtigen Parameter, die in 
+Klammern angegeben werden mÅssen.
+
+Sie kînnen mit diesen simplen Makros sehr leistungsfÑhige 
+Scripts erstellen.
+
+
+ Makro-Kommandos nach Funktionsbereichen
+========================================
+
+In der folgenden öbersicht sehen Sie alle in TEML integrierten 
+Makro-Kommandos alphabetisch sortiert nach Funktionsbereichen:
+
+
+ Block-Makros
+--------------
+
+Diese Makros beziehen sich auf Textblîcke und sind zur korrekten
+Aktualisierung der Bildschirmanzeige der raw-Makros SetPrevPs oder
+FixScreenPos oder zu beidem zu verwenden.
+
+     CopyBlock           MoveToBlockEnd
+
+     DeleteBlock         MoveToBlockEndRaw
+
+     DeleteBlockRaw      *ReadBlock
+
+     HighlightBlock      SetBlockBeg
+
+     MoveBlock           SetBlockEnd
+
+     MoveToBlockBeg      ToggleHideBlock
+
+     MoveToBlockBegRaw   *WriteBlock
+
+
+
+ Lîschen/EinfÅgen
+--------------------
+
+Diese Makros lîschen, machen den Lîschvorgang rÅckgÑngig und 
+fÅgen Text ein.
+
+     BackspaceDelete     DeleteToEOL
+
+     ClipClear           DeleteChar
+
+     ClipCopy            DeleteWord
+
+     ClipCut             EditMenu
+
+     ClipPaste           InsertText
+
+     ClipShow            LiteralChar
+
+     DeleteBlock         RestoreLine
+
+     DeleteBlockRaw      SetInsertMode
+
+     DeleteLine          ToggleInsert
+
+ Such-Makros
+--------------
+
+Diese Makros beziehen sich auf das Suchen.
+
+     GetFindString       RepeatSearch
+
+     MatchPairForward    Replace
+
+     MatchPairBackward   SearchMenu
+
+
+ TastenkÅrzel-Makros
+--------------------
+
+Diese Makros sind eine zweite AusfÅhrung der TastenkÅrzel der IDE.
+
+    *AddWatch           *ResetProgram
+    *CloseWindow        *RunProgram
+    *CompileFile        *RunToHere
+    *Help               *SaveFile
+    *LastHelp           *SetBreakpoint
+    *Menu               *Step
+    *Modify             *Trace
+    *NextWindow         *ZoomWindow
+    *OpenFile
+
+
+ Bildschirm-Makros
+-------------------
+
+Diese Makros steuern Cursor- und Bildschirmbewegungen.
+
+     BottomOfScreen      MoveToPrevPos
+     BottomOfScreenRaw   PageDown
+     CenterFixScreenPos  PageUp
+     CursorCharLeft      PageScreenDown
+     CursorCharRight     PageScreenUp
+     CursorDown          RightOfLine
+     CursorLeft          ScrollDown
+     CursorRight         ScrollUp
+     CursorUp            ScrollScreenDown
+     EndCursor           ScrollScreenUp
+     EndCursorRaw        SetMark
+     FixCursorPos        SetPrevPos
+     FixScreenPos        SwapPrevPos
+     HomeCursor          TopOfScreen
+     HomeCursorRaw       TopOfScreenRaw
+     LeftOfLine          WordLeft
+     MoveToMark          WordRight
+
+
+ System-Makros
+---------------
+
+Diese Makros beziehen sich auf System-Funktionen.
+
+    *Exit                *Quit
+     FullPaintScreen      SmartRefreshScreen
+     PaintScreen
+
+
+ Alphabetische Referenz aller Makro-Kommandos
+=============================================
+
+Hier finden Sie eine alphabetische Liste aller integrierten
+Makros. Eine Liste aller Makros sortiert nach Funktionsbereichen
+finden Sie im vorhergehenden Abschnitt.
+
+AddWatch           Dieses Makro ist identisch mit Ctrl-F7 oder
+                   Debug|Watches|Add Watch.
+
+BackspaceDelete    Der Cursor geht ein Zeichen zurÅck und lîscht es.
+
+BottomOfScreen     Verschiebt die Cursorposition zur unteren
+                   linken Ecke des Bildschirms. Dieses Makro merkt
+                   sich die Startposition des Cursors, soda· Sie
+                   mit dem Makro MoveToPrevPos automatisch
+                   zurÅckgelangen.
+
+BottomOfScreenRaw  Bewegt den Cursor in die linke untere Ecke des
+                   Bildschirms. Dieses Kommando Ñndert nicht wie
+                   das Makro BottomOfScreen die Øvorherige
+                   CursorpositionÆ, die Sie mit den Makros
+                   SwapPrevPos und MoveToPrevPos erreichen kînnen.
+
+CenterFixScreenPos Korrigiert die Position der Bildschirmanzeige
+                   bezogen auf den Cursor. Dieses Kommando
+                   verschiebt die Bildschirmanzeige so, da· der
+                   Cursor in der Mitte steht.
+
+ClipClear          Lîscht den markierten Text, d.h. das Clipboard
+                   wird nicht verÑndert. Das Makro ist identisch
+                   mit [Ctrl][Del] oder Edit|Clear.
+
+ClipCopy           Kopiert einen markierten Text, den Sie an jeder
+                   beliebigen Stelle wieder einfÅgen kînnen.
+                   Dieses Makro ist identisch mit [Ctrl][Ins] oder
+                   Edit/Copy.
+
+ClipCut            Schneidet den markierten Text aus. Dieses Makro
+                   ist identisch mit [Shift][Del] oder Edit/Cut.
+
+ClipPaste          FÅgt den zuletzt ausgeschnitten oder kopierten
+                   Text ein. Das Makro ist identisch mit
+                   [Shift][Ins] oder Edit/Paste.
+
+ClipShow           ôffnet das Clipboard-Fenster.
+
+CompileFile        Compiliert die aktuelle Datei. Dieses Makro ist
+                   identisch mit [Alt][F9] oder Compile/Compile
+
+CopyBlock          FÅgt an der Cursorposition eine Kopie des
+                   aktuellen Blocks ein. Im Unterschied zu dem
+                   Makro CopyBlockRaw hebt dieses Makro den neuen
+                   Block hervor.
+
+CursorCharLeft     Bewegt den Cursor ein Zeichen nach links.
+                   (Befindet sich der Cursor am Anfang einer
+                   Zeile, springt der Cursor zum vorhergehenden
+                   druckbaren Zeichen.)
+
+CursorCharRight    Bewegt den Cursor ein Zeichen nach rechts.
+                   (Befindet sich der Cursor am Ende einer Zeile,
+                   springt der Cursor zum nÑchsten druckbaren
+                   Zeichen.)
+
+CursorDown         Bewegt den Cursor eine Zeile nach unten, lÑ·t
+                   ihn aber in derselben Spalte.
+
+CursorLeft         Bewegt den Cursor eine Spalte nach links.
+
+CursorRight        Bewegt den Cursor eine Spalte nach rechts (auch
+                   wenn sich dort kein Zeichen befindet). Steht
+                   der Cursor am Bildschirmrand, bewegt ihn dieses
+                   Kommando aus dem sichtbaren Bildschirmbereich
+                   hinaus.
+
+CursorUp           Bewegt den Cursor eine Zeile hîher, belÑ·t ihn
+                   aber in derselben Spalte.
+
+DeleteBlock        Lîscht den aktuellen Block. Im Gegensatz zu 
+                   dem Makro DeleteBlockRaw lÑ·t DeleteBlock den
+                   Cursor an der gleichen Stelle auf dem
+                   Bildschirm (d.h. er wird nicht bewegt, wenn der
+                   Block gelîscht wird).
+
+DeleteBlockRaw     Lîscht den aktuellen Block. Im Gegensatz zu dem
+                   Makro DeleteBlock belÑ·t es den Cursor nicht an
+                   der gleichen Stelle am Bildschirm (er kann sich
+                   verschieben, wenn der Block gelîscht ist).
+
+DeleteChar         Lîscht das Zeichen, auf dem der Cursor steht.
+
+DeleteLine         Lîscht die Zeile, in der der Cursor steht.
+
+DeleteToEOL        Lîscht ab der Cursorposition bis zum Ende der
+                   Zeile.
+
+DeleteWord         Lîscht das Wort, auf dem der Cursor steht, und
+                   die Leerzeichen danach.
+
+EndCursor          Bewegt den Cursor an das Ende der Datei. Dieses
+                   Makro merkt sich die Øvorhergehende
+                   CursorpositionÆ, soda· Sie mit dem Makro
+                   MoveToPrevPos zurÅckgelangen.
+
+EndCursorRaw       Bewegt den Cursor an das Ende der Datei. Im
+                   Gegensatz zu dem Makro EndCursor, wird die
+                   Øvorherige CursorpositionÆ, die Sie mit den
+                   Makros SwapPrevPos und MoveToPrevPos erreichen
+                   kînnten, nicht vermerkt.
+
+Exit               VerlÑ·t den Editor.
+
+FixCursorPos       Korrigiert die Cursorposition bezÅglich des
+                   Bildschirms. Dieses Kommando verschiebt den
+                   Cursor in den sichtbaren Bildschirm und macht
+                   dabei so wenig wie mîglich Bewegungen, d.h. der
+                   Cursor erscheint am Anfang oder Ende des
+                   Bildschirms.
+
+FixScreenPos       Korrigiert den Bildschirm in bezug auf den
+                   Cursor. Dieses Kommando schiebt die
+                   Bildschirmanzeige zum Cursor und macht dabei so
+                   wenig Bewegungen wie mîglich, d.h. der
+                   Bildschirm erscheint Åber oder unter der
+                   Cursorposition.
+
+FullPaintScreen    Erzwingt einen neuen Bildschirmaufbau. Dadurch
+                   wird der Rand des Bildschirms ausgeblendet; es
+                   ist langsamer als PaintScreen.
+
+GetFindString      ôffnet das Dialogfenster Find fÅr die
+                   Textsuche. Die Suche beginnt an der aktuellen
+                   Cursorposition.
+
+Help               ôffnet wie auch das MenÅ-Kommando Help/Table of
+                   Contents das Fenster Help. Dieses Makro ist
+                   identisch mit [F1].
+
+HighlightBlock     Hebt den aktuell markierten Block hervor.
+
+HomeCursor         Bewegt den Cursor an den Anfang der Datei.
+                   Dieses Makro setzt die Startposition des
+                   Cursors automatisch so, da· Sie mit dem Makro
+                   MoveToPrevPos zurÅckgelangen kînnen.
+
+HomeCursorRaw      Bewegt den Cursor an den Anfang der Datei. Im
+                   Gegensatz zu dem Makro HomeCursor wird die
+                   Øvorhergehende CursorpositionÆ, die Sie mit den
+                   Makros SwapPrevPos und MoveToPrevPos erreichen
+                   kînnten, nicht vermerkt.
+
+InsertText("string") FÅgt an der aktuellen Cursorposition einen
+                     string ein. Der string mu· beidseitig mit
+                   AnfÅhrungszeichen markiert sein und kann bis zu
+                   4.096 Zeichen lang sein.
+
+LastHelp           ôffnet das zuletzt angezeigte Hilfe-Fenster.
+                   Dieses Makro ist identisch mit [Alt][F1] oder
+                   Help/Previous Topic.
+
+LeftOfLine         Bewegt den Cursor an den Anfang der Zeile
+                   (typische Definition fÅr [Home]).
+
+LiteralChar        FÅgt den nÑchsten Tastendruck buchstÑblich in
+                   die Datei ein (wie bei [Ctrl][P]).
+
+MatchPairBackward  Sucht den Partner zu dem Begrenzerzeichen, auf
+                   dem der Cursor steht, rÅckwÑrts.
+
+MatchPairForward   Sucht den Partner zu dem Begrenzerzeichen, auf
+                   dem der Cursor steht, vorwÑrts.
+
+Menu               Aktiviert das HauptmenÅ. Dieses Makro ist
+                   identisch mit [F10].
+
+Modify             Dieses Makro ist identisch mit [Ctrl][F4] oder
+                   Debug/Evaluate/Modify.
+
+MoveBlock          Verschiebt den aktuellen Block an die
+                   Cursorposition. Im Gegensatz zu dem Makro
+                   MoveBlockRaw, hebt dieses Makro den neuen Block
+                   hervor.
+
+MoveToBlockBeg     Bewegt den Cursor an den Anfang des aktuellen
+                   Blocks. Im Gegensatz zu dem Makro
+                   MoveToBlockBegRaw wird die verÑnderte
+                   Cursorposition auf dem Bildschirm angezeigt und
+                   die Øvorherige CursorpositionÆ verÑndert, die
+                   Sie mit den Makros SwapPrevPos und
+                   MoveToPrevPos erreichen kînnen.
+
+MoveToBlockBegRaw  Bewegt den Cursor an den Anfang des aktuellen
+                   Blocks. Im Gegensatz zu dem Makro
+                   MoveToBlockBeg wird die Cursorposition auf dem
+                   Bildschirm nicht aktualisiert und die
+                   Øvorherige CursorpositionÆ nicht geÑndert, die
+                   Sie mit den Makros SwapPrevPos und
+                   MoveToPrevPos erreichen kînnen.
+
+MoveToBlockEnd     Bewegt den Cursor an das Ende des aktuellen
+                   Blocks. Im Gegensatz zu dem Makro
+                   MoveToBlockEndRaw aktualisiert das Makro den
+                   Cursor auf dem Bildschirm und Ñndert die
+                   Øvorherige CursorpositionÆ, zu der Sie mit den
+                   Makros SwapPrevPos und MoveToPrevPos wieder
+                   gelangen kînnen.
+
+MoveToBlockEndRaw  Bewegt den Cursor an das Ende des aktuellen
+                   Blocks. Im Gegensatz zu dem Makro
+                   MoveToBlockEnd aktualisiert das Makro den
+                   Cursor auf dem Bildschirm nicht und verÑndert
+                   Øvorherige CursorpositionÆ nicht, zu der Sie
+                   mit den Makros SwapPrevPos und MoveToPrevPos
+                   wieder gelangen kînnen, nicht.
+
+MoveToMark(Zahl)  Bewegt den Cursor an die Stelle, die mit dem
+                  Makro SetMark(number) angegeben wurde. Sie
+                  kînnen 10 Markierungen setzten, wobei Sie SetMark
+                  einen Parameter von 0 bis 9 Åbergeben. Mit dem
+                  Cursor erreichen Sie eine der 10 Markierungen,
+                  wenn Sie die dazugehîrige Nummer an das Ende des
+                  Makros MoveToMark(Zahl) Åbergeben.
+
+MoveToPrevPos     Bewegt den Cursor an die Stelle, die in dem
+                  Makro SetPrevPos angegeben wurde.
+
+OpenFile          ôffnet das Dialogfenster Open. Dieses Makro ist
+                  identisch mit [F3].
+
+PageDown          Rollt den Bildschirm mit dem Cursor eine Seite
+                  weiter (typische Definition fÅr [PgDn].
+
+PageScreenDown    Schiebt den Bildschirm eine BildschirmlÑnge nach
+                  unten. Dabei kann der Cursor verschwinden.
+
+PageScreenUp      Schiebt den Bildschirm eine BildschirmlÑnge nach
+                  oben. Dabei kann der Cursor verschwinden.
+
+PageUp            Rollt den Bildschirm und den Cursor eine Seite
+                  nach oben (typische Definition fÅr [PgUp].
+
+PaintScreen       Baut den Bildschirm neu auf. PaintScreen
+                  zeichnet nur Linien aus dem Puffer; es ist
+                  schneller als FullPaintScreen.
+
+Quit              VerlÑ·t die integrierte Entwicklungsumgebung.
+                  Wurden VerÑnderungen nicht gespeichert,
+                  erscheint zur Warnung eine entsprechende 
+                  Meldung. Dieses Makro ist identisch mit
+                  [Alt][X].
+
+ReadBlock         Sie kînnen eine Textdatei îffnen und an der
+                  Cursorposition einfÅgen. Das Makro îffnet
+                  automatisch das Dialogfenster Open, aus dem Sie
+                  eine Datei wÑhlen kînnen.
+
+RepeatSearch      Sucht den Text, der zuletzt mit dem Makro
+                  GetFindString in das Dialogfenster Find
+                  eingegeben wurde.
+
+Replace           ôffnet das Dialogfenster Replace, so da· Sie
+                  Text suchen und ersetzten kînnen.
+
+ResetProgram      FÅhrt einen Programm-Reset durch. Dieses Makro
+                  ist iden tisch mit [Ctrl][F2] oder Run/Program
+                  Reset.
+
+RestoreLine       FÅgt die Zeile ein, die mit dem Makro DeleteLine
+                  gelîscht wurde, aber nur, wenn der Cursor
+                  inzwischen nicht auf eine andere Zeile bewegt
+                  wurde.
+
+RightOfLine       Bewegt den Cursor an das Ende der Zeile
+                  (typische Definition fÅr [End]).
+
+RunProgram        Startet das aktuelle Programm. Dieses Makro ist
+                  identisch mit [Ctrl][F9] oder Run/Run.
+
+RunToHere         LÑ·t ein Programm bis zu der Zeile laufen, in
+                  der sich der Cursor befindet. Dieses Makro ist
+                  identisch mit [F4] oder Run/Go to Cursor.
+
+SaveFile          Sichert die Datei im aktuellen Fenster. Dieses
+                  Makro ist identisch mit [F2] oder File/Save.
+
+ScrollDown        Rollt den Bildschirm eine Zeile nach unten.
+                  Bei diesem Makro verschwindet der Cursor nicht.
+
+ScrollScreenDown  Bewegt den Bildschirm eine Zeile nach unten und
+                  lÑ·t den Cursor an der gleichen relativen
+                  Position in der Datei stehen. Bei diesem
+                  Kommando kann der Cursor verschwinden.
+
+ScrollScreenUp    Bewegt den Bildschirm eine Zeile nach oben und
+                  lÑ·t den Cursor an der gleichen relativen
+                  Position in der Datei stehen. Bei diesem
+                  Kommando kann der Cursor verschwinden.
+
+ScrollUp          Rollt den Bildschirm eine Zeile nach oben. Bei
+                  diesem Kommando kann der Cursor nicht
+                  verschwinden.
+
+SetBlockBeg       Markiert die aktuelle Cursorposition als
+                  Blockanfang. Im Gegensatz zu dem Makro
+                  SetBlockBegRaw hebt dieses Makro den neuen Block
+                  hervor.
+
+SetBlockEnd       Markiert die aktuelle Cursorposition als
+                  Blockende. Im Gegensatz zu dem Makro
+                  SetBlockEndRaw hebt dieses Makro den neuen Block
+                  hervor.
+
+SetBreakpoint     Setzt an der Cursorposition einen Breakpoint.
+                  Dieses Makro ist identisch mit [Ctrl][F8] oder
+                  Debug/Toggle Breakpoint.
+
+SetInsertMode     Schaltet den EinfÅge-Modus ein. Zum Ausschalten
+                  geben Sie ein:
+
+                  BEGIN SetInsertMode; Toggle Insert END;
+
+SetMark(Zahl)     Setzt die aktuelle Cursorposition so, da· Sie
+                  sie mit dem Makro MoveToMark(Zahl) wieder
+                  erreichen kînnen. Zahl steht dabei fÅr eine Zahl
+                  von 0 bis 9. Bewegen Sie den Cursor auf eine der
+                  10 Markierungen, indem Sie die entsprechende Nummer
+                  (0-9) in das Makro MoveToMark(Zahl) ein geben.
+
+SetPrevPos        Markiert die aktuelle Cursorposition als Ort, an
+                  den Sie zurÅckkehren mîchen, wenn Sie die Makros
+                  SwapPrevPos oder MoveToPrevPos verwenden. Viele
+                  Makros vermerken implizit die Øvorherige
+                  CursorpositionÆ (die Ausnahme sind die raw
+                  -Makros).
+
+SmartRefreshScreen Baut nur die Bildschirmteile, die geÑndert
+                   wurden, wieder auf.
+
+Step              Startet ein Programm und fÅhrt die Anweisungen
+                  nacheinander aus; Unterroutinen werden
+                  Åbersprungen. Dieses Makro ist identisch mit
+                  [F8] oder Run/Step Over.
+
+SwapPrevPos       Schaltet die aktuelle Cursorposition auf die
+                  Stelle, die in dem Makro SetPrevPos angegeben
+                  wurde.
+
+ToggleHideBlock   Hebt den aktuell markierten Block hervor oder
+                  lîscht die Markierung. 
+
+ToggleInsert      Schaltet um in den EinfÅge-Modus oder zurÅck vom
+                  EinfÅge-Modus zum öberschreiben-Modus.
+
+TopOfScreen       Bewegt den Cursor in die obere linke Ecke des
+                  Bildschirms. Dieses Makro vermerkt automatisch
+                  die vorhergehende Cursorposition, so da· Sie sie
+                  mit dem Makro MoveToPrevPos wieder erreichen
+                  kînnen.
+
+TopOfScreenRaw    Bewegt den Cursor in die obere linke Ecke des
+                  Bildschirms. Im Gegensatz zu TopOfScreen wird
+                  die vorherige Cursorposition nicht vermerkt, die
+                  Sie mit den Makros SwapPrevPos und MoveToPrevPos
+                  wieder erreichen kînnten.
+
+Trace             Startet ein Programm und fÅhrt die Anweisungen
+                  schrittweise aus, Sub-Routinen werden dabei
+                  berÅcksichtigt. Dieses Makro ist identisch mit
+                  [F7] oder Run/Trace Into.
+
+ViewUserScreen    Schaltet auf den Programmbildschirm um.
+                  Dieses Makro ist identisch mit [Alt][F7] oder
+                  Window|User Screen.
+
+WordLeft          Setzt den Cursor auf das erste Zeichen des
+                  nÑchsten linken Wortes.
+
+WordRight         Setzt den Cursor auf das erste Zeichen des
+                  nÑchsten rechten Wortes.
+
+WriteBlock        Sichert den aktuellen Block. Das Makro
+                  WriteBlock îffnet automatisch das Dialogfenster
+                  File, in dem Sie den Dateinamen angeben kînnen.
+
+
+===================
+ 5. Fehlermeldungen
+===================
+
+Beim Erstellen Ihrer Makros werden Sie vielleicht einige Fehler
+entdecken, die Sie vermeiden kînnen, wenn Sie die 
+Compiler-KapazitÑt kennen:
+
+Jeder Makroaufruf benîtigt 1 Byte
+
+Jeder Integer-Parameter benîtigt 2 Byte
+
+Jeder Zeichen-Parameter benîtigt (Anzahl der Zeichen im String + 1) Byte.
+
+Jedes Makro benîtigt fÅr end 1 Byte.
+
+
+Cannot allocate memory for file. 
+               Zum Bearbeiten der Datei ist nicht genÅgend
+               Speicher vorhanden. TEMC benîtigt ungefÑhr 100
+               KByte von dem vorhandenen Speicher zum Kompilieren
+               der Datei.
+
+Expected Element
+               Die angezeigte Zeile enthÑlt den angegebenen Punkt
+               nicht.
+
+File <filename> could not be created. 
+               Die Datei fÅr die Ausgabe kann nicht angelegt
+               werden. In diesem Fall ist entweder das
+               Speichermedium voll, Sie haben kein Zugriffsrecht
+               auf das aktuelle Netz-Laufwerk oder der angegebene
+               Name ist ungÅltig.
+
+File <filename> is empty. 
+               Die Datei, die mit TEMC kompiliert werden soll, ist
+               leer.
+
+File <filename> larger than 64K. 
+               Die Makro-Datei ist grî·er als erlaubt (64 KByte).
+
+File <filename> not found. 
+               Die angegebene Datei existiert nicht.
+
+Invalid key. 
+               Die angegebene Taste ist falsch.
+
+Invalid symbol. 
+               Das angegebene Symbol ist kein echtes TEMC-Symbol.
+
+Out of memory. 
+               Zum Bearbeiten der Datei ist nicht genÅgend
+               Speicher vorhanden. TEMC benîtigt zum Kompilieren
+               der Datei circa 100 KByte des verfÅgbaren
+               Speichers.
+
+Read error on file filename. 
+               TEMC kann die Quell-Datei nicht lesen.
+
+Redefinition of key. 
+               Diese Taste ist an einer anderen Stelle der Datei
+               definiert.
+
+Redefinition of macro macro. 
+               Dieses Makro ist an einer anderen Stelle der Datei
+               definiert.
+
+Parameters to a macro call illegal. 
+               Makros dÅrfen keine Parameter enthalten. Versuchen
+               Sie einen Parameter zu Åbergeben, erhalten Sie eine
+               Fehlermeldung.
+
+Script too complex.
+               öberprÅfen Sie die nachstehenden Angaben, und
+               korrigieren Sie sie gegebenenfalls:
+
+               - Es sind zu viele Tasten definiert.
+               - Der String-Parameter ist zu lang (Die maximale
+                 String-LÑnge ist 256 Zeichen).
+               - Es sind zu viele Parameter angegeben.
+               - Die maximale Makro-Grî·e von 1.024 Byte ist
+                 Åberschritten.
+
+
+Undefined symbol symbol. 
+               Das angegebene Symbol wurde noch nicht definiert.
+
+Unexpected item. 
+               Die angezeigte Zeile wird wahrscheinlich
+               korrigiert, wenn Sie das angegebene Element lîschen
+               oder Ñndern.
+
+Unexpected end of file. 
+               Ein Begrenzungszeichen fÅr das letzte Makro oder
+               fÅr BEGIN/END fehlt.
+

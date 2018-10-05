@@ -1,0 +1,23 @@
+
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+              Frankfurt, 16.10.91
+
+  Ich bitte um Entschuldigung, daá ich noch keine Beschreibung fr die UNITs
+SVGA1 und SVGA2 geschrieben habe.
+  Das Programm TEST360 ist ein kleines Beispiel, das die wichtigsten Funkti-
+onen der UNITs benutzt.
+  SVGA2 untersttzt im Gegensatz zu SVGA1 den VGA- Modus 360 * 400 in 256
+Farben, sonst sind sie gleich.
+  Die Prozeduren SET320X200 bis SET1024X768 sind speziell fr das Programm
+GIF ausgelegt. Sie sollten, wenn die gewnschte Aufl”sung nicht zur Verf-
+gung steht, die n„chsth”here Aufl”sung ausw„hlen; steht keine h”here Auf-
+l”sung zur Verfgung, wird die n„chstniedrigere benutzt.
+  Ob das immer so gut geht, weiá ich nicht.
+
+
+

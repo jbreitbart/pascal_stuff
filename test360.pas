@@ -1,0 +1,88 @@
+
+PROGRAM TEST360;
+
+
+USES  CRT,SVGA2;
+
+
+VAR   I,J  : INTEGER;
+      PAL  : VGAPALETTETYP;
+
+
+BEGIN
+  I := CHECKVGA;
+  IF I < 0 THEN BEGIN
+    WRITELN;
+    WRITELN('Dies Programm ben”tigt eine VGA- Karte');
+    HALT;
+  END;
+
+(*
+  I := 0; { MIT I := 0 KANN DER MODUS 360 * 400 ERZWUNGEN WERDEN }
+*)
+  IF I = 0 THEN BEGIN
+    MODE360X400;
+  END ELSE BEGIN
+    SET640X400;
+    GRAPHMODE(VMOD);
+  END;
+
+  DIRECTVIDEO := FALSE;
+  FASTSETPALETTE := FALSE;
+
+  VGAGETPALETTE(PAL);
+  VERLAUF(PAL, 16,0, 0,0,  67,0,63,0);
+  VERLAUF(PAL, 67,0,63,0, 119,63,63,0);
+  VERLAUF(PAL,119,63,63,0, 187,0,0,63);
+  VERLAUF(PAL,187,0,0,63, 255,0, 0,0);
+  VGASETPALETTE(PAL,0,255);
+
+  J := 16;
+  FOR I := 0 TO MAXX DO BEGIN
+    BLINE(I,0,MAXX - I,MAXY,J,@PLOT);
+    INC(J);
+    J := J AND $FF;
+    IF J = 0 THEN J := 16;
+  END;
+  FOR I := MAXY DOWNTO 0 DO BEGIN
+    BLINE(MAXX,MAXY - I,0,I,J,@PLOT);
+    INC(J);
+    J := J AND $FF;
+    IF J = 0 THEN J := 16;
+  END;
+
+  IF XWID = 360 THEN FGBGTEXT(30,2,14,8,'Test fr Modus 360 * 400')
+                ELSE FGBGTEXT(30,2,14,8,'Test fr Modus 640 * 400');
+  GRAPHTEXT(1,18,9,'Text ohne den Hintergrund zu l”schen');
+
+  FOR I := 0 TO 14 DO
+  GRAPHTEXT(70+I,60+I,I,'beliebig positioniert');
+
+  XORTEXT(0,40,$F0,0,'Text im XOR- Modus');
+  XORTEXT(150,38,0,255,' Hintergrund XOR- Modus ');
+
+  SETFONT(14);
+  GRAPHTEXT(1,180,15,'Font 8*14');
+  SETFONT(16);
+  GRAPHTEXT(80,180,15,'Font 8*16');
+  SETFONT(8);
+  GRAPHTEXT(160,180,15,'Font 8*8');
+  SETFONT(16);
+  GRAPHTEXT(240,180,15,'gleichzeitig');
+
+  XORTEXT(80,330,$0F,$F0,' diverse XOR- Effekte ');
+
+  GRAPHTEXT(40,230,17,'QWERTZ');
+  FGBGTEXT(100,230,17,180,' QWERTZ ');
+
+  DOPPTEXT(40,370,11,'Batzenbuchstaben');
+
+  REPEAT
+    ROTIERE(PAL,16,255,TRUE);
+  UNTIL KEYPRESSED;
+
+  WHILE KEYPRESSED DO IF READKEY = ' ' THEN;
+  TEXTMODE(CO80);
+END.
+
+

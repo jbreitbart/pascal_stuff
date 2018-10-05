@@ -1,0 +1,94 @@
+
+    Beschreibung fr das Programm LBMSIZE.EXE   17.9.91
+
+  Dies File ist nicht Seitenformatiert
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+
+  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+  º                                                                    º
+  º  Dies Programm funktioniert NUR auf VGA- Karten mit ET 4000- Chip  º
+  º                                                                    º
+  º Fr Programmierer wird der Quellcode in TURBO PASCAL mitgeliefert  º
+  º                                                                    º
+  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+
+  Dies Programm ist Public Domain, es darf kostenlos weitergegeben werden,
+ich erlaube auch explizit, Teile des Quellcodes fr andere Programme zu
+benutzen.
+  Das Programm zu verkaufen verbiete ich.
+  Eine angemessene Gebhr fr das Kopieren darf erhoben werden, ich halte
+aber DM 15.- oder mehr auch mit einer sch”nen Verpackung und einem 
+gedruckten Handbuch nicht mehr als angemessen fr eine Kopiergebhr, 
+sondern ich untersage eine derartige Ver”ffentlichung des Programms, die
+ich eindeutig als kommerzielle Verwertung ansehe.
+  Jeder, der dies Programm weitergibt, sollte genug Anstand besitzen,
+meinen Namen und meine Anschrift in diesem File nicht zu ver„ndern oder
+zu entfernen bzw. dies File mitzukopieren.
+
+
+  Mit LBMSIZE k”nnen Ausschnitte aus LBM- Files erzeugt werden.
+
+  Z.B. ist es m”glich, die R„nder eines Files abzuschneiden.
+
+  Derzeit k”nnen die erzeugten Files leider nicht von den Programmen
+DELUXE PAINT und GDS eingelesen werden. Zum konvertieren in ein anderes 
+Format oder in lesbare LBM- Files verwenden Sie am besten das Programm 
+VPIC.
+
+  Bedienung von LBMSIZE :
+
+  Aufruf : LBMSIZE INPUTFILE[.LBM] OUTPUTFILE[.LBM]
+  Wenn Sie den Parameter OUTPUTFILE weglassen, k”nnen Sie das Input- File
+nur ansehen und abmessen.
+  Es wird das Input- File angezeigt, mit einem Raster berblendet.
+  Das Raster kann mit <Home> ( <Pos1> auf deutschen Tastaturen ) ein- und
+ausgeschaltet werden.
+  Mit den Cursortasten k”nnen Sie den linken und oberen Rand des Ausschnitts
+bewegen; mit <Ctrl>- Cursortasten ( <Strg> auf deutschen Tastaturen ), k”nnen
+der rechte und untere Rand des Ausschnitts bewegt werden.
+  Mit <F1> wird die linke obere Ecke des Ausschnitts ( in Pixeln ) und die
+Breite und H”he des Ausschnitts ins Bild eingeblendet.
+  Mit <End> wird der markierte Ausschnitt unter dem als OUTPUTFILE angegebenen
+Namen abgespeichert.
+
+  Wie gesagt, k”nnen mit LBMSIZE erzeugte Ausschnitte meines Wissens nur mit
+dem Programm VPIC eingelesen werden.
+  Wenn Sie mit VPIC ein GIF- File aus dem Ausschnitt erzeugen, k”nnen Sie 
+anschlieáend mit dem Programm GDS den Ausschnitt auf eine bestimmte Bild-
+schirmgr”áe aufdehnen und abspeichern :
+- GDS aufrufen, die Bildschirmaufl”sung einstellen und ggf. den LOCK- Modus
+ w„hlen.
+- Das Ausschnittfile anzeigen lassen und mit <Alt-F> auf die eingestellte
+ Bildschirmgr”áe aufdehnen.
+- Ist das Ergebnis zufriedenstellend, mit <Alt-W> ein neues File erzeugen.
+
+
+  Das Programm ist fr den reinen Eigennutz geschrieben und entbehrt
+somit der M”glichkeit, es auf verschiedene Super- VGA- Karten
+installieren zu k”nnen. Zum Installieren auf andere VGA- Karten als die
+mit dem TSENG LABS ET 4000- Chip sind nur wenige Handgriffe in der UNIT
+SVGA vorzunehmen :
+  Die Routine SETSEG ist zu „ndern und die Mini- Prozeduren SET640X350
+bis SET1024X768, die nur den Videomodus und die maximalen X- und Y-
+Koordinaten festlegen. Zum Ermitteln der ben”tigten SETSEG- Routine und
+der Video- Modus- Nummern fr bestimmte VGA- Karten k”nnen das
+disassemblierte Listing VPIC-43.DIS ( Auszug aus dem Programm VPIC ) und
+die Konfigurationsfiles fr VPIC ( *.CFG ) zurate gezogen werden.
+  Die SETnnnXnnn- Prozeduren fr Aufl”sungen, die Ihre VGA- Karte nicht
+untersttzt, sollten Sie durch die n„chsth”here bzw. n„chstniedrigere
+Aufl”sung ersetzen.
+
+  Ich empfehle generell die Anschaffung von VPIC, da mit diesem
+Programm diverse Format- Konvertierungen vorgenommen werden k”nnen.
+
+
+
+  Ich habe das Programm mit TURBO PASCAL 5.0 erstellt.
+  Zum Compilieren ist die Toolbox TURBO PROFESSIONAL n”tig.
+
+

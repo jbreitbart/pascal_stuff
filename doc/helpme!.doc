@@ -1,0 +1,342 @@
+                        Turbo Pascal 6.0
+                        ----------------
+
+Diese Datei enthÑlt Antworten auf hÑufig auftretende Fragen.
+Die Datei README enthÑlt weitere Tips fÅr Hilfe. Wenn Sie 
+mit Turbo Vision programmieren, sollten Sie auch die Datei
+TVISION.DOC lesen.
+
+
+Diskettenlaufwerke
+------------------
+Turbo Pascal 6.0 benîtigt zwei Diskettenlaufwerke (eine Festplatte
+wird empfohlen). Wenn Sie ein Diskettenlaufwerk mit 720 KByte oder
+mehr Speicherplatz verwenden, kînnen Sie TURBO.EXE und TURBO.TPL
+auf dieselbe Diskette kopieren. Mit einem Diskettenlaufwerk von
+360 KByte mÅssen Sie TURBO.EXE auf das Laufwerk B: und TURBO.TPL
+auf die Systemdiskette verlagern. Starten Sie den Rechner und
+tippen Sie B:TURBO. Die Quelldateien kînnen auf der Diskette von 
+TURBO.TPL gespeichert werden. Sie kînnen mit TPUMOVER TURBO.TPL
+verkleinern, indem Sie nicht benîtigte Units entfernen.
+
+Wenn Sie das Programm INSTALL verwenden, sollten Ihre Disketten 
+vîllig leer sein. Nach der Installation kînnen Sie TURBO.TPL auf
+die Startdiskette kopieren.
+
+Das Hilfesystem von Turbo Pascal (TURBO.HLP) braucht ca. 700
+Kbyte Speicherplatz und kann deshalb nicht mit kleinen
+Diskettenlaufwerken benutzt werden.
+
+Nach Ablauf von INSTALL zur Einrichtung der Arbeitsdisketten
+kînnen die anderen Turbo Pascal-Komponenten (wie BGI, Turbo Vision
+oder das Demoprogramm) mit dem Programm UNZIP manuell
+dearchiviert und auf anderen Disketten gespeichert werden.
+
+
+FreePtr und FreeMin
+-------------------
+Diese Bezeichner von Turbo Pascal 5.x werden vom neuen Heap-Manager 
+nicht mehr benîtigt. Lîschen Sie Referenzen auf FreeMin aus den Programmen.
+Falls Ihre Routinen mit FreePtr implementierungsabhÑngige Operationen 
+auf dem Heap ausfÅhren, mÅssen sie fÅr den neuen Heap-Manager 
+aktualisiert werden. (Wenn Sie fÅr ein Exec auf die Spitze des 
+Speichers zugreifen mÅssen, rufen Sie die Prozedur SetMemTop der 
+Unit Memory auf.)
+
+
+HeapError
+---------
+Eine HeapError Funktion mu· sofort zurÅckkehren, wenn
+Size grî·er 0 ist:
+
+  function HeapError(Size: Word): Integer; far;
+  begin
+    if Size > 0 then
+    begin
+      { ... perform HeapError processing here ... }
+    end;
+  end;
+
+In der Version 6.0 wird HeapError mit einem Wert von 0 aufgerufen,
+wenn eine Zuweisung den HeapPtr erhîht.
+
+
+MausunterstÅtzung
+-----------------
+IDE und Turbo Vision von Turbo Pascal brauchen einen Maustreiber,
+der mit dem Microsoft Maustreiber 6.x oder einer jÅngeren Version 
+kompatibel ist oder zu Logitech 4.xx oder jÅnger.
+
+
+Code fÅr den 286-Prozessor
+--------------------------
+Programme, die mit der Compileranweisung {$G+} compiliert sind, 
+prÅfen nicht zur Laufzeit, ob es sich um einen 286-Kompatiblen
+Prozessor handelt. Wenn man versucht, 80286-Anweisungen auf einem
+8086 oder 8088 laufen zu lassen, stÅrzt der Rechner ab.
+
+
+$X+ Ist Global
+--------------
+Die Compileranweisung {$X+} ist global, deshalb mu· sie vor 
+Deklarationen oder Befehlen im Quelltext stehen. Steht sie woanders, 
+tritt der Fehler "Invalid Compiler Directive" auf.
+
+
+Nicht-statische Constructor-Aufrufe
+-----------------------------------
+Werden vererbte Constructor-Aufrufe aus einer Methode durch-
+gefÅhrt, sollte immer die Syntax TypeName.ConstructorName
+verwendet werden. Dann kann der Compiler den vererbten 
+Constructor statisch aufrufen und Ñndert die "IdentitÑt" 
+des aufrufenden Objekts nicht.
+
+  Korrekt:
+    ...
+    TObject.Init;         { immer Typ spezifizieren }
+    ...
+
+  Falsch:
+    ...
+    Init;                 { kann "IdentitÑt" des aufrufenden
+                            Objekts Ñndern}
+    ...
+
+
+Kritische DOS-Fehler
+---------------------
+IDE und Turbo Vision verwalten kritische Fehler.
+Da es mit manchen DOS-Versionen Probleme gibt, mu· man eventuell
+mehrere Male ESC drÅcken, um nach einem kritischen Fehler 
+(wie DRIVE NOT READY) eine Operation abzubrechen.
+
+
+Iterative Methoden
+------------------
+ForEach, FirstThat und LastThat nehmen alle eine lokale
+(verschachtelte) far-Prozedur oder -Funktion als Parameter.
+Einzelheiten dazu finden Sie im Turbo Vision-Handbuch.
+
+Anmerkung:
+Lîschen Sie nie mit ForEach Elemente einer Kollektion.
+Der Lîschvorgang setzt die folgenden Elemente nach vorn, soda·
+Elemente Åbersprungen werden kînnen.
+
+
+Editor Swap File
+----------------
+Die IDE erzeugt eine Swap-Datei fÅr den virtuellen Editor mit einem
+Namen in der Form TPxxxx.$$$. Lîschen Sie diese Datei nie, wenn
+die IDE noch lÑuft (aus einer DOS-Shell).
+Wenn Sie den Rechner neu starten, wÑhrend die IDE lÑuft, darf vor dem
+Neuladen der IDE diese Datei gelîscht werden.
+
+Die Swap-Datei wÑchst, wird aber nie kleiner, wÑhrend die IDE lÑuft.
+Beim Editieren einer gro·en Datei und wenig Speicherplatz sollte
+die Swap-Datei auf ein anderes Laufwerk (am Besten eine RAM-Disk;
+mit der Kommandozeilenoption /S beim Start) ausgelagert werden.
+Ist kein anderes Laufwerk verfÅgbar, kann die IDE verlassen und 
+neu gestartet werden, um die Swap-Datei auf ihre normale Grî·e 
+zu reduzieren.
+
+
+
+Inline Assembler Notes
+----------------------
+Der integrierte Assembler verhÑlt sich im folgenden Fall anders
+als Turbo Assembler. Bei TASM gibt es keinen Unterschied zwischen 
+einem Array einiger Typen und einer einzelnen Variablen dieses Typs:
+
+
+    MyVar       DW      ?
+    MyArray     DW      10 DUP(?)
+                .
+                .
+                MOV     AX,MyVar
+                MOV     AX,MyArray[BX]
+
+TASM verleiht sowohl "MyVar" und "MyArray" den Typ WORD. Beide 
+kînnen in ein Register der Grî·e Word ohne Typumwandlung geladen
+werden.
+
+Beim integrierten Assembler von Turbo Pascal ist dies anders.
+Ein Array entspricht hier nicht einer einzelnen Variablen, beim
+Zugriff auf ein Element des Arrays mu· eine Typumwandlung
+vorgenommen werden.
+
+
+    var
+      MyVar: Word;
+      MyArray: array[0..9] of Word;
+      .
+      .
+    asm
+      MOV     AX,MyVar
+      MOV     AX,MyArray[BX].Word
+      MOV     AX,WORD PTR MyArray[BX]
+    end;
+
+
+Turbo Pascal 6.0 und die Toolboxen
+----------------------------------
+Mit der Ausnahme der Turbo Editor Toolbox lassen sich die
+Toolboxen der Version 4.0 unter Turbo Pascal 6.0 compilieren.
+Die Turbo Editor Toolbox mu· an folgenden Stelle im Quellcode
+verÑndert werden, damit sie unter dem neuen Heap-Manager lÑuft:
+
+  MicroStar
+  ---------
+    In MSVARS.PAS:
+      1) In Zeile 219 nach "var"
+            einfÅgen:  "FreePtr: Pointer;"
+      2) In Zeile 295 nach "begin"
+            einfÅgen: "FreePtr := Ptr(Seg(HeapEnd^) - $1000, 0);"
+    In INVOKE.PAS:
+      1) In Zeile 18 nach "Dos"
+            EinfÅgen:   ", MsVars"
+
+  FirstEd
+  -------
+    In EDVARS.PAS:
+      1) In Zeile 139
+            EinfÅgen: "FreePtr: Pointer;"
+         In Zeile 207
+            EinfÅgen: "FreePtr := Ptr(Seg(HeapEnd^) - $1000, 0);"
+
+ZusÑtzlich ist eine aktualisierte Version von BINED.OBJ fÅr die
+Version 6.0 nîtig. Sie ist Åber das CompuServe-Netz erhÑltlich.
+
+
+
+************************************************
+Die zehn meist gestellten Fragen an die Hotline
+************************************************
+
+1. Wie liest und schreibt man eine Datei innerhalb eines 
+Turbo Pascal Programms?
+
+Es folgt ein Programm, das eine Textdatei erzeugt und sie dann
+liest:
+
+       program FileDemo;
+       var
+         FileVar: Text;
+         InString, OutString: String;
+       begin
+         OutString := 'Neuer Text';
+         Assign(FileVar, 'TEST.TXT');
+         Rewrite(FileVar);           { Erzeugt neue Textdatei }
+         Writeln(FileVar, OutString);
+         Close(FileVar);
+         Assign(FileVar, 'TEST.TXT');
+         Reset(FileVar);           { ôffnet existierende Textdatei }
+         Readln(FileVar, InString);
+         Close(FileVar);
+       end.
+
+2. Was ist die Datei GRAPH.TPU ?
+
+GRAPH.TPU enthÑlt die Grafik-Unit aus BGI.ZIP von den Originaldisketten. 
+Das Programm INSTALL speichert sie unter \TP\BGI.
+
+
+3. Wie druckt man eine Ausgabe eines Programms?
+
+       program Print;
+       uses Printer;
+       begin
+         Writeln(Lst, 'Hello Printer');
+       end.
+
+4. Warum gibt es einen Fehler namens "Unit file format error" beim
+compilieren mit dem neuen Turbo Pascal-Compiler?
+
+Sie verwenden eine Unit, die mit einer frÅheren Pascal-Version 
+compiliert wurde. Compilieren Sie alle Programme mit Turbo
+Pascal 6.0 neu, entweder mit der Kommandozeilenoption /B oder 
+mit dem Befehl Compile|Build der IDE.
+
+
+5. Wie berechnet man X hoch Y?
+
+       function Power(X, Y: Real): Real;
+       begin
+         Power := Exp(Y * Ln(X));
+       end.
+
+6. Warum laufen meine Programme in der IDE-Umgebung problemlos
+und von DOS aus nicht?
+
+Schuld sind meistens nicht initialisierte Variablen.
+Ein weiterer mîglicher Grund wird in der nÑchsten Frage behandelt.
+
+
+7. Mein Programm scheint wild in den Speicher zu schreiben.
+Welche Anweisungen kînne schuld sein?
+
+Es folgen die hÑufigsten GrÅnde:
+
+Problem                        Vorschlag
+-------                        ----------
+Array index out of range       BereichsprÅfung {$R+} einschalten.
+
+Uninitialisierte Variable      Initialisieren !!
+
+Pointers out of bounds         Achten Sie darauf, da· Zeiger
+                               zugewiesen sind und nicht
+                               auf gelîschte Speicherstellen
+                               zeigen.
+
+Move, FillChar, BlockRead      Alle diese Routinen schreiben
+                               in den Speicher, ohne die Grî·en-
+                               und Typ-PrÅfung von Pascal zu
+                               berÅcksichtigen. Achten Sie darauf,
+                               da· die korrekte Datenmenge
+                               kopiert, eingefÅgt oder gelesen
+                               wird.
+
+Index Åber String hinaus       Wenn var Strings nur mit {$V-}
+                               prÅfen, mÅssen sie selbst darauf
+                               achten, da· nicht Åber das Ende 
+                               des String hinausgeschrieben wird.
+
+
+8. Warum startet Exec nicht das angegebene Programm?
+
+Definieren Sie mit der Compilerdirektive $M die maximale Heap-
+Grî·e. Siehe auch EXECDEMO.PAS in \TP\DEMOS.
+
+Au·er dem Weglassen der Compilerdirektive $M kînnen zwei weitere
+hÑufige Fehler aus dem Wert von DosError geschlossen werden:
+
+DosError     ErklÑrung
+--------     -----------
+ 2           Datei nicht gefunden. Geben Sie den Pfad an.
+             Wenn ein interner DOS-Befehl wie DIR ausgefÅhrt
+             werden soll, mu· Exec erst COMMAND.COM starten.
+             (Siehe das Exec-Beispiel).
+
+ 8           Nicht genug Speicher, um das Programm auszufÅhren.
+             Verkleinern Sie den Heap (Siehe \TP\DEMOS\EXECDEMO.PAS).
+
+
+9. Was ist zu tun, wenn Turbo Pascal einen "out of memory"-Fehler 
+meldet?
+
+Wenn in der IDE-Umgebung der Speicherplatz ausgeht, gibt es einige
+Konfigurationsmîglichkeiten. Im Benutzerhandbuch steht dazu eine
+Liste. 
+Wenn beim Kommandozeilen-Compiler beim Compilieren der Speicher
+fehlt, finden Sie an derselben Stelle Hilfe. Ist dann immer noch zu
+wenig Speicher verfÅgbar, verwenden Sie TPCX.EXE, den Compiler
+fÅr Extended Memory von Turbo Pascal 6.0.
+
+
+10. Warum treten beim Vergleich und der Ausgabe von Kommazahlen
+unerwartete Ergebnisse auf?
+
+Flie·komma- und Real-Zahlen sind AnnÑherungen, bei denen kleine
+Rundungsfehler bei der Berechnung und Typumwandlung auftreten kînnen.
+Dieses Problem wird ausfÅhrlich im Programmierhandbuch behandelt.
+
+

@@ -1,0 +1,55 @@
+program Kreis_zeichnen;
+
+uses crt, graph, alles;
+var treiber, modus, xmittelpunkt,
+    ymittelpunkt, xradius, yradius, x, y                 : integer;
+    winkel, xekreis, yekreis, xkreis, ykreis   : real;
+
+begin
+ treiber:=detect; modus:=0;
+ initgraph(Treiber,Modus,'');
+ xmittelpunkt:=350;
+ ymittelpunkt:=240;
+ xradius:=300;
+ yradius:=50;
+ winkel:=1/2*pi;
+ while winkel < pi+1/2*pi do
+  begin
+   xekreis:=cos(winkel);
+   yekreis:=sin(2*winkel);
+   xkreis:=xradius*xekreis;
+   ykreis:=yradius*yekreis;
+   x:=round(xmittelpunkt + xkreis);
+   y:=round(ymittelpunkt - ykreis);
+   putpixel(x,y,13);
+   winkel:=winkel+0.01;
+  end;
+ xradius:=100;
+ yradius:=20;
+ winkel:=0;
+ while winkel < 1/2*pi do
+  begin
+   xekreis:=cos(winkel);
+   yekreis:=sin(2*winkel);
+   xkreis:=xradius*xekreis;
+   ykreis:=yradius*yekreis;
+   x:=round(xmittelpunkt + xkreis);
+   y:=round(ymittelpunkt - ykreis);
+   putpixel(x,y,13);
+   winkel:=winkel+0.01;
+  end;
+ winkel:=pi+1/2*pi;
+ while winkel < 2*pi do
+  begin
+   xekreis:=cos(winkel);
+   yekreis:=sin(2*winkel);
+   xkreis:=xradius*xekreis;
+   ykreis:=yradius*yekreis;
+   x:=round(xmittelpunkt + xkreis);
+   y:=round(ymittelpunkt - ykreis);
+   putpixel(x,y,13);
+   winkel:=winkel+0.01;
+  end;
+ readln;
+ closegraph
+end.

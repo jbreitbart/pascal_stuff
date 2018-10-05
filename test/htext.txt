@@ -1,0 +1,57 @@
+.topic NoContext=0
+ Demoprogramm zum Turbo Vision-Hilfesystem
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Das vorliegende Demo-Programm zeigt Ihnen die
+Verwendung eines Hilfesystems in einem Turbo
+Pascal-Programm.
+
+Dieses Fenster verlassen Sie mit [Esc].
+
+.topic SAbout=2
+ [System|öber das Programm...]
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Hier erhalten Sie Hinweise Åber den
+Copyright-Vermerk.
+
+Siehe auch {Compiler-Info...:SCompiler}.
+
+.topic SCompiler
+ [System|Compiler-Info...]
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Hier erhalten Sie Hinweise Åber den verwendeten
+Compiler, mit dem das Programm erstellt wurde.
+
+Siehe auch {öber das Programm...:SAbout}.
+
+.topic SDOSshell
+ [System|DOS shell]
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Mit DOS shell kehren Sie auf die DOS-Ebene
+zurÅck und kînnen dort DOS-Befehle
+ausfÅhren (z.B. das Formatieren einer
+Diskette).
+
+.topic SBeenden
+ [System|Beenden] (Alt-X)
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Alt-X beendet das laufende Programm.
+
+.topic Dialogfenster
+ [System|Dialogfenster...]
+ ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+Sehen Sie sich im Quelltext die Methode
+
+    TDemo.Dialogfenster
+
+an und beachten Sie, wie einfach mit
+
+    D^.HelpCtx:= hcDialogFenster
+
+diesem Dialog ein Hilfetext zugeordnet
+werden kann.

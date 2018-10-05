@@ -1,0 +1,789 @@
+                          EDITORS
+                          -------
+
+TEditor implementiert einen Editor von 64 KByte fÅr Turbo Vision.
+Dieser Editor unterstÅtzt die Maus, eine RÅckgÑngig-Funktion,
+blockweises Lîschen, Kopieren und EinfÅgen, automatisches EinrÅcken
+und einen öberschreibemodus, Tastenbelegung im WordStar-Stil und
+Suchen/Ersetzen. Er kann auch als mehrzeiliges Memofeld in Eingabe-
+fenstern und Formularen verwendet werden.
+
+Das Editieren von Dateien mit TEditor wird in TVEDIT.PAS demonstriert,
+ein Memofeld in TVFORM.PAS. Beide Dateien stehen im Directory \T6\TVDEMOS.
+
+
+
+                         Objekte
+                         -------
+
+TEditor
+-------
+TEditor ist das Basisobjekt mit den Editor-Funktionen. Beim Erzeugen
+eines TEditor-Objekts wird sein Puffer vom Heap mit der gegebenen
+Grî·e zugewiesen. Der Puffer ist zu Beginn leer.
+
+
+TMemo
+-----
+TMemo ist ein Nachkomme von TEditor fÅr Eingabefenster oder Formulare.
+GetData und SetData werden unterstÅtzt, die Taste Tab kann von TDialog
+bearbeitet werden. Die Farben sind von TEditor unterschieden.
+GetData/SetData erwarten einen Record wie folgt:
+
+  TMemoRec = record
+    TextLen: Word;
+    TextData: array[1..MaxMemoLen] of Char;
+   end;
+
+MaxMemoLen ist der an TMemo Åbergebene Wert von BufSize. TMemo legt
+einen entsprechenden Puffer auf dem Heap an.
+
+
+TFileEditor
+-----------
+TFileEditor editiert den Inhalt einer Datei, die in einem Puffer
+gespeichert ist, der von der Unit BUFERS zugewiesen wird. So kînnen
+mehrere Editoren denselben Speicherbereich teilen. Anstatt 64 KByte
+fÅr jeden Editor kann z.B. der erste Editor 16 KByte, die folgenden
+112 KByte verwenden, wenn 128 KByte fÅr alle Editoren zugewiesen ist.
+Jeder Editor nimmt den nîtigen Speicherbereich aus dem gemeinsamen
+Pool und wÑchst oder schrumpft um 4 KByte, falls erforderlich.
+BUFFERS.DOC enthÑlt zusÑtzlich Informationen zu dynamischen Puffern.
+
+
+TEditWindow
+-----------
+TEditWindow ist ein Fenster fÅr TFileEditor. In seinem Titel wird die
+zu bearbeitende Datei angezeigt. Rollbalken und eine Editorstatuszeile
+erscheinen. Wird an TEditWindow kein Name Åbergeben, wird angenommen,
+da· eine Zwischenablage initialisiert werden soll.
+
+
+TIndicator
+----------
+TIndicator gibt die Nummer der aktuellen Zeile und Spalte in der unteren
+linken Ecke des Editierfensters aus. Er wird von TEditWindow initialisiert
+und als vierter Parameter an TEditor Åbergeben.
+
+
+                       WordStar-Tasten
+                       ---------------
+
+CTRL-Tasten-Kombinationen im WordStar-Stil sind, bis auf die Block-
+befehle, mit denen der integrierten Entwicklungsumgebung identisch.
+Da TEditor keine festen Blîcke verwendet, werden Blockbefehle durch
+Kopieren in die und von der Zwischenablage simuliert. ^K^B setzt
+den Blockbeginn, ^K^K kopiert Text in die Zwischenablage, ^K^C fÅgt
+Text von der Zwischenablage in den Editor ein.
+
+
+  ^A oder Ctrl-Linkspfeil    Wort links
+  ^C oder PgDn               Seite unten
+  ^D oder Rechtspfeil        Cursor rechts
+  ^E oder Pfeil nach oben    Zeile hoch
+  ^F oder Ctrl-Rechtspfeil   Wort rechts
+  ^G oder Del                Zeichen (Auswahl) lîschen
+  ^H oder Backspace          Zeichen (Auswahl) davor lîschen
+  ^L                         Suche wiederholen
+  ^M oder Enter              Neue Zeile
+  ^O                         EinrÅcken an/aus
+  ^R oder PgUp               Seite hoch
+  ^S oder Linkspfeil         Cursor links
+  ^T                         Wort lîschen
+  ^U                         RÅckgÑngig
+  ^V oder Ins                EinfÅgen/öberschreiben
+  ^X oder AbwÑrtspfeil       Zeile abwÑrts
+  ^Y                         Zeile lîschen
+
+  ^Q^A                       Ersetzen
+  ^Q^C oder Ctrl-PgDn        Dateiende
+  ^Q^D oder End              Zeilenende
+  ^Q^F                       Suchen
+  ^Q^H                       Zum Zeilenanfang lîschen
+  ^Q^R oder Ctrl-PgUp        Dateibeginn
+  ^Q^S oder Home             Zeilenbeginn
+  ^Q^Y                       Zum Zeilenende lîschen
+
+
+  ^K^B                       Beginn Markierung
+  ^K^C                       EinfÅgen aus Zwischenablage
+  ^K^H                       Markierung verdecken
+  ^K^K                       In Zwischenablage kopieren
+  ^K^Y                       In Zwischenablage lîschen
+
+Anstatt der ^K-Befehle kann ein Block auch Åber die SHIFT-Taste
+und eine der Cursortasten markiert werden.
+
+Diese Tastenbelegungen sind Ñnderbar, indem die Methode ConvertEvent
+Åberschrieben wird, welche Tasten als Befehle interpretiert.
+
+
+
+                   Interne Strukturen
+                   ------------------
+
+Pufferstruktur
+--------------
+TEditor implementiert einen Editor mit "Spaltenpuffer". Darin wird
+Text in zwei Abschnitten gespeichert. Text vor dem Cursor steht am
+Anfang des Puffers, Text nach dem Cursor am Pufferende. Der Bereich
+zwischen diesen Abschnitten wird "Spalte" genannt. Jedes im Editor neu
+eingegebene Zeichen wird in die Spalte geschrieben. Auch gelîschter
+Text steht in der Spalte und kann mit der Funktion RÅckgÑngig wieder
+in den Text geschrieben werden. Die Anzahl der geschriebenen und der
+gelîschten Zeichen wird registriert. Bei der Funktion RÅckgÑngig
+werden die neu eingefÅgten Zeichen gelîscht oder die gelîschten an den
+Beginn der Spalte kopiert. Der Cursor steht dann nach dem zuvor
+gelîschten Text.
+
+Das folgende Diagramm beschreibt die Funktion des Spaltenpuffers nach
+dem EinfÅgen der Zeichen "abcdefghijkxxxopqrstuvwxyz":
+
+                                      CurPtr
+                                      |
+                                      v<-- GapLen -->
+           ===========================................
+           |abcdefjhijkxxxopqrstuvwxyz               |
+           ===========================................
+            <-------- BufLen -------->
+            <---------------- BufSize -------------->
+
+               Puffer nach dem EinfÅgen von Text
+
+CurPtr enthÑlt die Cursorposition, GapLen die LÑnge der Spalte, BufLen
+die Gesamtzahl der Zeichen im Puffer. BufSize ist die Puffergrî·e, die
+immer aus GapLen plus BufLen besteht. WÅrde der Cursor hinter die Zeichen
+"xxx" bewegt, wÅrde der Puffer so aussehen:
+
+                          CurPtr
+                          |
+                          v<-- GapLen -->
+           ===============...............=============
+           |abcdefjhijkxxx               opqrstuvwxyz|
+           ===============...............=============
+  BufLen =  <------------>      +       <----------->
+            <--------------- BufSize --------------->
+
+                  Puffer nach Cursorbewegung
+
+Beachten Sie, da· der Cursor nach wir vor am Spaltenbeginn steht. So
+kînnen schnell neue Zeichen eingegeben werden, ohne Text zu verschieben.
+Wird "xxx" mit der Taste Backspace gelîscht, werden die Zeichen ans Ende
+der Spalte kopiert und der Cursor rÅckwÑrts bewegt. Das Feld DelCount
+enthÑlt die Anzahl der gelîschten Zeichen.
+
+                       CurPtr
+                       |
+                       v<--- GapLen ---->
+           ============..................=============
+           |abcdefjhijk               xxxopqrstuvwxyz|
+           ============..................=============
+                                      <-> DelCount
+  BufLen =  <------------>      +       <----------->
+            <--------------- BufSize --------------->
+
+                Puffer nach dem Lîschen von "xxx" 
+
+Wenn Zeichen eingefÅgt werden, wird InsCount inkrementiert, damit fÅr
+RÅckgÑngig die Zahl der Zeichen bekannt ist. Nach der Eingabe von "lmn"
+sieht der Puffer folgenderma·en aus:
+
+                          CurPtr
+                          |
+                          v<-- GapLen -->
+           ===============...............=============
+           |abcdefjhijklmn            xxxopqrstuvwxyz|
+           ===============...............=============
+                       <-> InsCount   <-> DelCount
+  BufLen =  <------------>      +       <----------->
+            <--------------- BufSize --------------->
+
+               Puffer nach dem EinfÅgen von "lmn" 
+
+InsCount enthÑlt die Anzahl der eingefÅgten Zeichen. Wird die Funktion
+RÅckgÑngig gewÅnscht, wird "lmn" gelîscht und "xxx" an diese Stelle
+kopiert. Der Puffer sieht wieder aus wie vor den VerÑnderungen.
+
+                          CurPtr
+                          |
+                          v<-- GapLen -->
+           ===============...............=============
+           |abcdefjhijkxxx               opqrstuvwxyz|
+           ===============...............=============
+  BufLen =  <------------>      +       <----------->
+            <--------------- BufSize --------------->
+
+                    Puffer nach RÅckgÑngig
+
+
+Vor der Funnktion RÅckgÑngig darf der Cursor nicht bewegt werden, da mit
+der Verlagerung der Spalte alle Informationen verloren sind. RÅckgÑngig
+erstreckt sich nur auf Aktionen vor der nÑchsten Cursorbewegung, mit
+welcher VerÑnderungen als "akzeptiert" betrachtet werden. Der fÅr die
+Funktion RÅckgÑngig im Puffer verbrauchte Platz, der zur Eingabe neuer
+Zeichen irgendwann fehlen kînnte, wird durch Bewegen des Cursors wieder
+gewonnen.
+
+
+Selektion oder Block
+--------------------
+Eine Selektion oder Block-Markierung befindet sich stets vor oder
+hinter dem Cursor. Wird Text durch Tastendruck oder durch InsertText
+eingefÅgt, wird der Inhalt der Selektion vom eingefÅgten Text ersetzt.
+Existiert keine Selektion, wird der Text nur eingefÅgt. Die Selektion
+wird von den Feldern SelStart und SelEnd begrenzt. Die Selektion kann
+durch einen Aufruf der Methode SetSelection ausgelîst werden, die auch
+den Cursor bewegt.
+
+Optionen
+--------
+TEditor bietet einige Optionen, deren Status in Boolschen Feldern
+gespeichert ist. CanUndo gibt an, ob der Editor Informationen enthÑlt,
+welche die Funktion RÅckgÑngig ermîglichen. Da diese Funktion Speicher-
+platz braucht, kann es vorteilhaft sein, sie zeitweise auszuschalten.
+FÅr die Zwischenablage geschieht dies automatisch. Overwrite zeigt an,
+ob eingefÅgt oder Åberschrieben wird. AutoIndent notiert, ob der Cursor
+beim DrÅcken der Return-Taste in die Spalte des ersten nicht leeren
+Zeichens der vorigen Zeile gesetzt wird, was beim Editieren von
+Quellcode praktisch ist.
+
+
+                             Objekte
+                             -------
+
+TEditor
+-----------------------------------------------------------------
+
+Felder
+------
+HScrollBar: PScrollBar;
+
+  Zeiger auf den horizontalen Rollbalken oder nil, wenn der
+  Rollbalken nicht existiert.
+
+VScrollBar: PScrollBar;
+
+  Zeiger auf den vertikalen Rollbalken oder nil, wenn der
+  Rollbalken nicht existiert.
+
+Indicator: PIndicator;
+
+  Zeiger auf den Indikator; nil, wenn er nicht existiert.
+
+Buffer: PEditBuffer;
+
+  Zeiger auf den Textpuffer.
+
+BufSize: Word;
+
+  Grî·e des Puffers.
+
+BufLen: Word;
+
+  Aktuelle TextlÑnge im Puffer.
+
+GapLen: Word;
+
+  Grî·e der "Spalte" zwischen dem Text vor und nach dem Cursor. Eine
+  Beschreibung der Funktion der "Spalte" finden  Sie weiter oben.
+
+SelStart: Word;
+
+  Beginn der Selektion.
+
+SelEnd: Word;
+
+  Ende der Selektion.
+
+CurPtr: Word;
+
+  Offset des Cursors.
+
+CurPos: TPoint;
+
+  Zeilen/Spaltenposition des Cursors in der Datei.
+
+Delta: TPoint;
+
+  Die oberste Zeile und die Spalte ganz links.
+
+Limit: TPoint;
+
+  Maximalzahl der Anzeigespalten und der Textzeilen.
+  Grenzen der Rollbalken.
+
+DelCount: Word;
+
+  Anzahl der gelîschten Zeichen am Ende der "Spalte" fÅr die
+  Funktion RÅckgÑngig.
+
+InsCount: Word;
+
+  Anzahl der seit der letzten Cursorbewegung in den Text
+  eingefÅgten Zeichen fÅr die Funktion RÅckgÑngig.
+
+IsValid: Boolean;
+
+  True, wenn die View gÅltig ist. Wird von der Methode Valid
+  verwendet.
+
+CanUndo: Boolean;
+
+  True, wenn die Funktion RÅckgÑngig aktiv ist.
+
+Modified: Boolean;
+
+  True, wenn der Puffer verÑndert wurde.
+
+Selecting: Boolean;
+
+  True, wenn der Editor im Selektier-Modus ist (d.h. ^K^B
+  gedrÅckt wurde).
+
+Overwrite: Boolean;
+
+  True im öberschreibmodus, ansonsten befindet sich der Editor im
+  EinfÅgemodus.
+
+AutoIndent: Boolean;
+
+  True, wenn automatisch eingerÅckt wird.
+
+
+Methoden
+--------
+constructor Init(var Bounds: TRect; AHScrollBar, AVScrollBar: PScrollBar;
+  AIndicator: PIndicator; ABufSize: Word);
+
+  Erzeugt ein TEditor-Objekt mit den Åbergebenen Rollbalken und dem
+  Indikator, und mit einem Puffer der Grî·e ABufSize. Options stehen
+  auf sfSelectable, EventMask gestattet Ereignisse des Typs evBroadcast.
+  AHScrollBar, AVScrollBar oder AIndicator kînnen nil sein, wenn sie
+  nicht gebraucht werden.
+
+constructor Load(var S: TStream);
+
+  LÑdt und initialisiert ein TEditor-Objekt aus dem angegebenen Stream.
+  Der Puffer wird leer initialisiert und nicht der frÅhere Inhalt geladen.
+
+function BufChar(P: Word): Char;
+
+  Liefert das P-te Zeichen der Datei, das in der "Spalte" auftritt.
+
+function BufPtr(P: Word): Word;
+
+  Liefert den Offset in den Puffer auf das P-te Zeichen der Datei,
+  das in der "Spalte" auftritt.
+
+procedure ChangeBounds(var Bounds: TRect); virtual;
+
+  Die Methode des Vorfahren wird Åberschrieben, damit die Datei
+  sichtbar bleibt, wenn sich die Grî·e des Vorfahren Ñndert.
+
+procedure ConvertEvent(var Event: TEvent); virtual;
+
+  Konvertiert Tastenereignisse in Befehle, fÅr Tastenbelegungen
+  Im WordStar-Stil. Kann fÅr andere Belegungen Åberschrieben werden.
+
+function CursorVisible: Boolean;
+
+  Liefert True, wenn Cursor (oder EinfÅgeposition) sichtbar sind.
+
+procedure DeleteSelect;
+
+  Lîscht die Selektion, falls vorhanden.
+
+procedure DoneBuffer; virtual;
+
+  Wird aufgerufen, wenn der Puffer entfernt werden soll. FreeMem wird
+  mit den Parametern Buffer und BufSize aufgerufen, wenn der Puffer nicht
+  auf dem Heap gespeichert werden soll. Dies geschieht in TFileEditor.
+
+procedure Draw; virtual;
+
+  öberschrieben, um den Editor darzustellen. Sollte von Nachkommen von
+  TEditor nicht Åberschrieben werden.
+
+function GetPalette: PPalette; virtual;
+
+  Liefert die Farbpalette des Editors, CEditor. Kann fÅr andere Farben
+  Åberschrieben werden.
+
+procedure HandleEvent(var Event: TEvent); virtual;
+
+  Ereignisverwaltung fÅr den Editor. Kann fÅr zusÑtzliche Befehle
+  Åberschrieben werden.
+
+procedure InitBuffer; virtual;
+
+  Wird beim Zuweisen des Puffers aufgerufen. Als Vorgabe wird GetMem
+  mit den Parametern Buffer und BufSize aufgerufen. Wollen Sie keine
+  Zuweisung des Puffers auf dem Heap, mÅssen Sie diese Methode
+  Åberschreiben.
+
+function InsertBuffer(var P: PEditBuffer; Offset, Length: Word;
+  AllowUndo, SelectText: Boolean): Boolean;
+
+  Diese Methode ist zustÑndig fÅr das EinfÅgen von Text. Length Bytes
+  werden mit dem gegebenen Zeiger in den Puffer P am aktuellen Offset
+  eingefÅgt. Optional wird der eingefÅgte Text fÅr die Funktion
+  RÅckgÑngig selektiert. Diese Methode braucht nie direkt aufgerufen
+  zu werden, da dies InsertFrom und InsertText tun. Sie sollte
+  verwendet werden, wenn sich der Puffer, aus dem kopiert wird, ver-
+  lagern kînnte (z.B. P mit der Unit Buffers zugewiesen wurde).
+
+function InsertFrom(Editor: PEditor): Boolean; virtual;
+
+  FÅgt den selektierten Textblock aus dem gegebenen Editor in diesen
+  Editor ein. Damit werden Blîcke entfernt, kopiert und eingefÅgt.
+  Braucht nie Åberschrieben werden.
+
+function InsertText(Text: Pointer; Length: Word;
+  SelectText: Boolean): Boolean;
+
+  FÅgt Text der LÑnge Length in den Puffer ein und selektiert
+  optional den Text. Einfacher anzuwendende Version von InsertBuffer.
+
+procedure ScrollTo(X, Y: Integer);
+
+  Bewegt Spalte X und Zeile Y in die obere linke Ecke des Editors.
+
+function Search(FindStr: String; Opts: Word): Boolean;
+
+  Sucht nach gegebenem String im Editor mit den angegebenen Optionen.
+  Diese sind:
+
+    efCaseSensitive      Gro·/Kleinschreibung berÅcksichtigt
+    efWholeWordsOnly     Nur ganze Worte
+
+function SetBufSize(NewSize: Word): Boolean; virtual;
+
+  Wird aufgerufen, wenn der Puffer auf den gegebenen Wert vergrî·ert
+  oder verkleinert werden kann und liefert in diesem Fall True. Ist
+  NewSize kleiner oder gleich der neuen Grî·e, wird als Vorgabe True
+  geliefert.
+
+procedure SetCmdState(Command: Word; Enable: Boolean);
+
+  Macht den Befehl aktiv/inaktiv. Befindet sich der Editor nicht im
+  sichtbaren Fenster, bleibt der Befehl inaktiv. Anstatt EnableCommands
+  und DisableCommands zum Aktivieren/Desaktivieren von Befehlen verwendbar.
+
+procedure SetSelect(NewStart, NewEnd: Word; CurStart: Boolean);
+
+  Markiert einen Textblock entsprechend der in NewStart und NewEnd
+  gegebenen Begrenzungen. Der Cursor wird abhÑngig vom Wert von CurStart
+  vor oder nach dem Block positioniert.
+
+procedure SetState(AState: Word; Enable: Boolean); virtual;
+
+  SetState wird Åberschrieben, um Rollbalken und den Indikator zu
+  verdecken oder zu zeigen, und um Befehle zu aktivieren/desaktivieren.
+  Soll dies fÅr zusÑtzliche Befehle geschehen, wird stattdessen
+  UpdateCommands Åberschrieben.
+
+procedure Store(var S: TStream);
+
+  Speichert den Editor im gegebenen Stream.
+
+procedure TrackCursor(Center: Boolean);
+
+  Macht den Cursor sichtbar. Falls Center auf True ist, wird der Cursor
+  im Bildschirm in Y-Richtung zentriert; die Spalte Ñndert sich nicht.
+
+procedure Undo;
+
+  Macht énderungen seit der letzten Cursorbewegung rÅckgÑngig.
+
+procedure UpdateCommands; virtual;
+
+  FÅr zusÑtzliche Befehle wie cmUndo, cmClip, cmCopy usw.
+
+function Valid(Command: Word): Boolean; virtual;
+
+  Liefert entsprechend dem Befehl in Command die GÅltigkeit des
+  View-Objekts. Als Vorgabe wird der Wert von IsValid geliefert, der
+  True ist, falls der Puffer nicht nil ist.
+
+
+TMemo
+-----------------------------------------------------------------
+
+Methoden
+--------
+constructor Load(var S: TStream);
+
+  LÑdt und initialisiert ein TMemo-Objekt aus dem gegebenen Stream.
+
+function DataSize: Word; virtual;
+
+  Liefert die Datengrî·e fÅr GetData und SetData. Vorgabe ist
+  SizeOf(Word) + BufSize.
+
+procedure GetData(var Rec); virtual;
+
+  Schreibt den Pufferinhalt in die gegebene Variable Rec.
+
+function GetPalette: PPalette; virtual;
+
+  Liefert die Farbpalette CMemo, die von TMemo in TDialog verwendet wird.
+
+procedure HandleEvent(var Event: TEvent); virtual;
+
+  Hindert TMemo daran, kbTab zu verarbeiten, und bearbeitet Ereignisse
+  ansonsten wie TEditor.
+
+procedure SetData(var Rec); virtual;
+
+  Liest den Inhalt des Puffers aus der Variablen Rec.
+
+procedure Store(var S: TStream);
+
+  Speichert TMemo im gegebenen Stream.
+
+
+TFileEditor
+-----------------------------------------------------------------
+
+Felder
+------
+
+FileName: FNameStr;
+
+  Name der zu editierenden Datei.
+
+
+Methoden
+--------
+constructor Init(var Bounds: TRect;
+  AHScrollBar, AVScrollBar: PScrollBar;
+  AIndicator: PIndicator; AFileName: FNameStr);
+
+  Erzeugt ein TFileEditor-Objekt mit den Åbergebenen Rollbalken
+  und dem Indikator und lÑdt die Datei AFileName. Ist die Datei nicht
+  vorhanden oder ungÅltig, wird eine Fehlermeldung ausgegeben und von
+  der Methode Valid des Objekts False geliefert. Options sind auf
+  sfSelectable gesetzt, EventMask gestattet Ereignisse des Typs
+  evBroadcast. AHScrollBar, AVScrollBar oder AIndicator kînnen nil sein,
+  wenn sie nicht benîtigt werden.
+
+constructor Load(var S: TStream);
+
+  LÑdt und initialisiert ein TFileEditor-Objekt aus dem gegebenen
+  Stream. Die Datei wird wieder in den Editor geladen, der Cursor
+  an die Position vor dem Speichern gebracht. Ideal fÅr die Option
+  "Desktop save".
+
+procedure DoneBuffer; virtual;
+
+  Gibt den Puffer frei, der von der Unit Buffers zugewiesen wurde.
+
+procedure HandleEvent(var Event: TEvent); virtual;
+
+  Wird Åberschrieben, um die Befehle cmSave und cmSaveAs zu implementieren.
+
+procedure InitBuffer; virtual;
+
+  Weist Speicherplatz von der Unit Buffers fÅr den Editor-Puffer zu.
+
+function LoadFile: Boolean;
+
+  Liest die Datei von der Platte und ÅberprÅft Fehler. Wurde die Datei
+  nicht geladen, liefert IsValid False.
+
+function Save: Boolean;
+
+  Speichert die Datei auf die Festplatte. Gelang das Speichern nicht
+  oder wurde es abgebrochen, wird False geliefert. Hat EditorFlags das
+  Bit efBackupFiles gesetzt, wird eine .BAK-Datei geschrieben. Hat die
+  Datei keinen Namen, wird SaveAs aufgerufen.
+
+function SaveAs: Boolean;
+
+  Speichert den Inhalt des Editors unter einem anderen Namen. Der
+  Name wird Åber ein Dialogfenster erfragt, das Åber einen Zeiger
+  auf die Funktion EditorDialogs geîffnet wird. Die Funkti0on liefert
+  True, wenn gespeichert wurde, ansonsten False (z.B. wenn die Operation
+  abgebrochen wurde).
+
+function SaveFile: Boolean;
+
+  Speichert die Datei auf die Festplatte. Gelang das Speichern nicht,
+  wird False geliefert. Hat EditorFlags das Bit efBackupFiles gesetzt,
+  wird eine .BAK-Datei geschrieben.
+
+function SetBufSize(NewSize: Word): Boolean; virtual;
+
+  Wird Åberschrieben, um den Puffer in Einheiten von 4 KByte
+  durch Aufruf der Unit Buffers zu vergrî·ern oder zu verkleinern.
+
+procedure Store(var S: TStream);
+
+  Speichert das TFileEditor Objekt im gegebenen Stream. Es wird nicht
+  der Inhalt, sondern der Name der Datei gespeichert.
+
+procedure UpdateCommands; virtual;
+
+  öberschrieben, um die Befehle cmSave und cmSaveAs zu aktivieren/
+  desaktivieren. Sie sind nur gÅltig, wenn das aktuelle View-Objekt ein
+  Editor ist.
+
+function Valid(Command: Word): Boolean; virtual;
+
+  öberschrieben, um die Datei vor dem Programmende zu sichern. Liefert
+  False, wenn der Anwender das Speichern abbricht.
+
+
+TEditWindow
+-----------------------------------------------------------------
+
+Felder
+------
+
+Editor: PFileEditor;
+
+  Zeiger auf das Editor Objekt im Editierfenster.
+
+constructor Init(var Bounds: TRect; FileName: FNameStr;
+  ANumber: Integer);
+
+  Erzeugt ein TEditWindow Objekt, das die gegebene Datei mit der
+  Fensternummer ANumber editiert. Diese Methode initialisiert einen
+  TFileEditor mit Rollbalken und einem Indikator. Ist der Dateiname
+  leer, wird eine neue Datei angenommen. Falls der Editor gleich der
+  Variablen Clipboard ist, wird er als Notizblock verwendet.
+
+constructor Load(var S: TStream);
+
+  Erzeugt und initialisiert ein TEditWindow im gegebenen Stream.
+
+procedure Close; virtual;
+
+  Wird Åberschrieben, um das Fenster zu verdecken und nicht zu schlie·en,
+  wenn der Editor ein Notizblock ist.
+
+function GetTitle(MaxSize: Integer): TTitleStr; virtual;
+
+  Liefert den Dateinamen oder 'Clipboard', falls das Editor-Objekt als
+  Zwischenablage verwendet wird.
+
+procedure HandleEvent(var Event: TEvent); virtual;
+
+  Zeichnet mit cmUpdateTitle den Rahmen des Fensters neu. In SaveAs
+  wird damit der Fenstertitel geÑndert, wenn die Datei unter einem
+  neuen Namen gespeichert wird.
+
+procedure Store(var S: TStream);
+
+  Speichert das TEditWindow Objekt im gegebenen Stream.
+
+
+TIndicator
+-----------------------------------------------------------------
+
+Felder
+------
+
+Location: TPoint;
+
+  Speichert die Anzeigeposition; wird von TEditor aktualisiert.
+
+Modified: Boolean;
+
+  True, wenn der TEditor verÑndert wurde; gibt in diesem Fall ein
+  spezielles Zeichen aus.
+
+Methoden
+--------
+
+constructor Init(var Bounds: TRect);
+
+  Erzeugt ein TIndicator-Objekt.
+
+procedure Draw; virtual;
+
+  Zeichnet den Indikator.
+
+function GetPalette: PPalette; virtual;
+
+  Liefert einen Zeiger auf CIndicator, der Vorgabe fÅr die TIndicator-
+  Farbpalette.
+
+procedure SetState(AState: Word; Enable: Boolean); virtual;
+
+  Zeichnet beim Verlagern den Indikator im Rahmen in derselben Farbe.
+
+procedure SetValue(ALocation: TPoint; AModified: Boolean);
+
+  Methode, mit der TEditor die Feldwerte eines TIndicator aktualisiert.
+
+
+
+
+                      Globale Werte
+                      -------------
+
+Variablen
+---------
+WordChars: set of Char;
+
+  Zeichen, die die Befehle cmWordLeft und cmWordRight als Zeichen
+  eines Wortes ansehen sollen. Die Vorgabe ist
+  ['0'..'9', 'A'..'Z', '_', 'a'..'z'].
+
+EditorDialog: TEditorDialog;
+
+  EditorDialog ist eine Prozedurvariable fÅr TEditor-Objekte, um
+  verschiedene Dialoge anzuzeigen. Da diese von der jeweiligen
+  Anwendung abhÑngen, kann EDITORS keine eigenen Dialoge anzeigen.
+  Stattdessen wird diese Funktions-Variable aufgerufen. In TVEDIT.PAS
+  finden Sie dazu ein Beispiel. Die Dialogwerte sind:
+
+    edOutOfMemory
+    edReadError
+    edWriteError
+    edCreateError
+    edSaveModify
+    edSaveUntitled
+    edSaveAs
+    edFind
+    edSearchFailed
+    edReplace
+    edReplacePrompt
+
+
+EditorFlags: Word;
+
+  EditorFlags enthalten Flags fÅr den Editor, deren Werte wie folgt
+  definiert sind:
+
+    efCaseSensitive      Vorgabe, Gro·/Kleinschreibung zu beachten
+    efWholeWordsOnly     Vorgabe, nur nach ganzen Worten zu suchen
+    efPromptOnReplace    Nach BestÑtigung ersetzen
+    efReplaceAll         Alle ersetzen
+    efDoReplace          Ersetzen durchfÅhren
+    efBackupFiles        Sicherungskopien beim Speichern
+
+  Vorgabe ist efBackupFiles + efPromptOnReplace.
+
+FindStr: String[80];
+
+  Speichert den letzten Wert, nach dem gesucht wurde.
+
+ReplaceStr: String[80];
+
+  Speichert den letzten Wert, der ersetzt wurde.
+
+Clipboard: PEditor = nil;
+
+  Zeiger auf die Zwischenablage. Jedes TEditor-Objekt kann als
+  Zwischenablage verwendet werden, indem es Åber diese Variable
+  referenziert wird. In der Zwischenablage sollte die Funktion
+  RÅckgÑngig ausgeschaltet sein (d.h. CanUndo auf False stehen).
+
+Prozeduren
+----------
+
+procedure RegisterEditors;
+
+  Registriert alle Objekttypen in EDITORS.

@@ -1,0 +1,82 @@
+
+    Beschreibung fr das Programm PCX.EXE   17.9.91
+
+  Dies File ist nicht Seitenformatiert
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+
+  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+  º                                                                    º
+  º  Dies Programm funktioniert NUR auf VGA- Karten mit ET 4000- Chip  º
+  º                                                                    º
+  º Fr Programmierer wird der Quellcode in TURBO PASCAL mitgeliefert  º
+  º                                                                    º
+  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+
+  Dies Programm ist Public Domain, es darf kostenlos weitergegeben werden,
+ich erlaube auch explizit, Teile des Quellcodes fr andere Programme zu
+benutzen.
+  Das Programm zu verkaufen verbiete ich.
+  Eine angemessene Gebhr fr das Kopieren darf erhoben werden, ich halte
+aber DM 15.- oder mehr auch mit einer sch”nen Verpackung und einem 
+gedruckten Handbuch nicht mehr als angemessen fr eine Kopiergebhr, 
+sondern ich untersage eine derartige Ver”ffentlichung des Programms, die
+ich eindeutig als kommerzielle Verwertung ansehe.
+  Jeder, der dies Programm weitergibt, sollte genug Anstand besitzen,
+meinen Namen und meine Anschrift in diesem File nicht zu ver„ndern oder
+zu entfernen bzw. dies File mitzukopieren.
+
+
+  Das Programm PCX ist ein Fileviewer fr ZSOFT PCX- und PCC- Files.
+  Dies Programm soll keine Konkurrenz zu den diversen Fileviewern sein,
+die als PD oder SHAREWARE erh„ltlich sind.
+  Hauptsache beim Schreiben des Programms war es, eine eigene Routine zum
+Lesen des entsprechenden Fileformats zu haben. In diesem Sinne sollten
+Sie das Programm sehen, und Sie drfen es auch in diesem Sinne nutzen.
+
+  Das Programm PCX zeigt, wenn es ohne jedwede Parameter aufgerufen
+wird, eine Fileselektorbox fr '*.PC?' des aktuellen Verzeichnisses. 
+Die Fileselektorbox ( und somit das Programm ) kann mit der <Esc>- Taste 
+oder der rechten Maustaste verlassen werden.
+  In der Fileselektorbox kann der Cursor durch eingabe von Buchstaben
+auf eine Filespezifikation bewegt werden, durch Benutzung der
+Cursortasten oder mit der Maus. Die Maussteuerung ist leider etwas
+inkonsequent, aber die Selektorbox ist ein fertiges Modul, das zu „ndern
+mir zu viel Arbeit macht. Mit der rechten Maustaste verlassen Sie die
+Fileselektorbox, mit der linken Maustaste positionieren Sie den Cursor
+und w„hlen Sie ein File aus. Befindet sich der Cursor nicht auf dem
+angeklickten File, wird er zuerst dorthin positioniert, klicken Sie das
+File an, auf dem sich der Cursor befindet, wird dies ausgew„hlt und
+angezeigt. Ein Wechsel des Laufwerks ist in der Fileselektorbox nicht
+m”glich, Sie k”nnen aber z.B. durch Aufruf von PCX D: ( von DOS aus )
+das Laufwerk D: zum Arbeitslaufwerk machen.
+
+
+  Das Programm ist fr den reinen Eigennutz geschrieben und entbehrt
+somit der M”glichkeit, es auf verschiedene Super- VGA- Karten
+installieren zu k”nnen. Zum Installieren auf andere VGA- Karten als die
+mit dem TSENG LABS ET 4000- Chip sind nur wenige Handgriffe in der UNIT
+SVGA vorzunehmen :
+  Die Routine SETSEG ist zu „ndern und die Mini- Prozeduren SET640X350
+bis SET1024X768, die nur den Videomodus und die maximalen X- und Y-
+Koordinaten festlegen. Zum Ermitteln der ben”tigten SETSEG- Routine und
+der Video- Modus- Nummern fr bestimmte VGA- Karten k”nnen das
+disassemblierte Listing VPIC-43.DIS ( Auszug aus dem Programm VPIC ) und
+die Konfigurationsfiles fr VPIC ( *.CFG ) zurate gezogen werden.
+  Die SETnnnXnnn- Prozeduren fr Aufl”sungen, die Ihre VGA- Karte nicht
+untersttzt, sollten Sie durch die n„chsth”here bzw. n„chstniedrigere
+Aufl”sung ersetzen.
+
+  Ich empfehle generell die Anschaffung von VPIC, da mit diesem
+Programm diverse Format- Konvertierungen vorgenommen werden k”nnen.
+
+
+
+  Ich habe das Programm mit TURBO PASCAL 5.0 erstellt.
+  Zum Compilieren ist die Toolbox TURBO PROFESSIONAL n”tig.
+
+

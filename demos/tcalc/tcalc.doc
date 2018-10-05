@@ -1,0 +1,174 @@
+
+                        Turbo Pascal 6.0
+                   Informationen zu TurboCalc  
+
+
+TurboCalc compilieren
+---------------------
+
+  Die folgenden Dateien - in gepackter Form in TCALC.ZIP enthalten -
+  sind notwendig, um TCALC.EXE zu erzeugen:
+
+    TCALC    PAS
+    TCCELL   PAS
+    TCCELLSP PAS
+    TCHASH   PAS
+    TCINPUT  PAS
+    TCLSTR   PAS
+    TCMENU   PAS
+    TCPARSER PAS
+    TCRUN    PAS
+    TCSCREEN PAS
+    TCSHEET  PAS
+    TCUTIL   PAS
+    TCCOMPAR OBJ
+    TCMVSMEM OBJ
+
+  DarÅber hinaus bindet TCALC auch das Modul OBJECTS ein. Daher mu· 
+  sich OBJECTS.TPU im Verzeichnis \TP\TVISION des Unit-Pfades befinden.
+
+
+Typ der Zellen
+--------------
+
+  Wert:       Eine Zahl.
+
+  Text:       Eine Zeichenkette; sie mu· immer mit einem Leerzeichen
+    beginnen, andernfalls betrachtet TCALC sie als einen Ausdruck
+    und versucht, sie auszuwerten: In der Regel erhalten Sie dann
+    eine Fehlermeldung.
+
+  Formel:     Eine Zeichenkette, die einen Ausdruck darstellt (die
+    ErklÑrung, was ein Ausdruck ist, folgt). Der Wert einer solchen
+    Zelle wird, sofern "Auto" (= automatische Neuberechnung) aktiv 
+    ist, immer auf den neuesten Stand gebracht.
+
+  Wiederhole: Eine Zelle mit einem Zeichen, das Åber das ganze
+    Arbeitsblatt hin wiederholt wird. Dem Zeichen, das wiederholt
+    werden soll, mu· ein umgekehrter SchrÑgstrich vorangehen.
+    Wenn Sie also \_ eingeben, wird das Unterstrich-Zeichen auf 
+    dem gesamten Arbeitsbereich des Bildschirms dargestellt.
+
+
+Allgemeine Informationen
+------------------------
+
+  Spalten kînnen Werte zwischen A und CRXO (65535), Zeilen Werte
+  zwischen 1 und 65535 annehmen.
+
+  Die kleine Raute in der oberen linken Ecke eines Arbeitsblattes
+  zeigt an, da· dieses Arbeitsblatt das gerade aktuelle ist. Dort
+  steht auch die Nummer des Arbeitsblattes, gegebenfalls zusammen
+  mit einigen Buchstaben, die den Status der Bearbeitung angeben:
+  'F' bedeutet, da· Formeln angezeigt werden; ein 'A' zeigt an,
+  da· die Option "Auto" (= automatische Neuberechnung) aktiv ist.
+
+  Der Name der Datei, in die das Arbeitsblatt geschrieben wird,
+  ist am Fu· jedes Arbeitsblattes angegeben, versehen mit einem
+  Stern, wenn dieses Arbeitsblatt verÑndert wurde.
+
+
+AusdrÅcke
+---------
+
+  Auf Zellen wird Bezug genommen, indem die Bezeichnung der Spalte
+  gefolgt von der Nummer der Zeile eingegeben wird:
+
+    A1+A2
+    B6^5
+
+  Um die Summe eines Bereichs von Zellen zu erhalten, setzen Sie
+  einen Doppelpunkt zwischen die erste und die letzte Zelle dieses
+  Bereichs:
+
+    A1:A10    - Summiert die Werte der Zellen A1 bis A10 und
+                legt das Resultat in der aktuellen Zelle ab.
+
+    A1:C10    - Summiert die Werte der Zellen A1 bis A10, B1 bis
+                B10 und C1 bis C10 und legt das Resultat in der
+                aktuellen Zelle ab.
+
+
+VerfÅgbare Funktionen
+---------------------
+
+  ABS   - Absolutwert
+  ACOS  - Arcus Cosinus
+  ASIN  - Arcus Sinus
+  ATAN  - Arcus Tangens
+  COS   - Cosinus
+  COSH  - hyperbolischer Cosinus
+  EXP   - Exponentialfunktion
+  LOG   - Logarithmus
+  LOG10 - Logarithmus zur Basis 10
+  POW10 - berechnet die zehnte Potenz des Arguments 
+  ROUND - rundet zur nÑchsten ganzen Zahl
+  SIN   - Sinus
+  SINH  - hyperbolischer Sinus
+  SQR   - Quadrat
+  SQRT  - Quadratwurzel
+  TAN   - Tangens
+  TANH  - hyperbolischer Tangens
+  TRUNC - gibt den ganzzahligen Teil einer Zahl zurÅck
+
+  Beispiele:
+
+    TRUNC(A1)
+    SQRT(SQR(34.5))
+    ABS(TRUNC(B16))
+
+
+TastenkÅrzel
+------------
+
+  AltX       - Quit
+  Ins        - macht einen Block sichtbar oder unsichtbar
+  Del        - lîscht die aktuelle Zelle
+  F2         - sichert das aktuelle Arbeitsblatt
+  AltF2      - sichert als
+  F3         - ersetzt das aktuelle Arbeitsblatt
+  AltF3      - lÑdt ein neues Arbeitsblatt (und îffnet ein 
+               weiteres Fenster)
+  F4         - lîscht das aktuelle Arbeitsblatt
+  F6         - wechselt zum nÑchsten Arbeitsblatt
+  F7         - schaltet die Anzeige von Formeln an oder aus
+  F8         - schaltet automatische Neuberechnung an oder aus
+  F9         - berechnet neu
+  F10        - HauptmenÅ
+
+  öber die Buchstaben- und Zifferntasten werden neue Zellen
+  in das Arbeitsblatt eingefÅgt.
+
+
+Der Parser
+----------
+
+  Die Staus- und Sprunginformationen fÅr den Parser wurden mit
+  Hilfe des UNIX-Dienstprogramms YACC erstellt. Dazu waren folgende
+  Eingaben nîtig:
+
+%token CONST CELL FUNC
+%%
+e : e '+' t
+  | e '-' t
+  | t
+  ;
+t : t '*' f
+  | t '/' f
+  | f
+  ;
+f : x '^' f
+  | x
+  ;
+x : '-' u
+  | u
+  ;
+u : CELL ':' CELL
+  | o
+  ;
+o : CELL
+  | '(' e ')'
+  | CONST
+  | FUNC '(' e ')'
+  ;
+%%

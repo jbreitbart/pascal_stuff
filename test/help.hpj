@@ -1,0 +1,11 @@
+[FILES]
+HELP.RTF
+
+[OPTIONS]
+INDEX=Index
+TITLE=Test-Hilfesystem für BPW
+COMPRESS=TRUE
+
+[MAP]
+ErzeugeHilfe    1
+HilfeAnwenden   2

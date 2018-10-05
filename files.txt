@@ -1,0 +1,195 @@
+
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+              Frankfurt, 16.10.91
+
+
+  Beiliegende Programme sind Public Domain, sie dÅrfen kostenlos weiterge-
+geben werden, ich erlaube auch explizit, Teile des Quellcodes fÅr andere 
+Programme zu benutzen.
+  Die Programme zu verkaufen verbiete ich.
+  Eine angemessene GebÅhr fÅr das Kopieren darf erhoben werden, ich halte
+aber DM 15.- oder mehr auch mit einer schînen Verpackung und einem 
+gedruckten Handbuch nicht mehr als angemessen fÅr eine KopiergebÅhr, 
+sondern ich untersage eine derartige Verîffentlichung der Programme, die
+ich eindeutig als kommerzielle Verwertung ansehe.
+  Jeder, der diese Programme weitergibt, sollte genug Anstand besitzen,
+meinen Namen und meine Anschrift in diesem File nicht zu verÑndern oder
+zu entfernen bzw. dies File mitzukopieren.
+
+  Die Programme wurden mit TURBO PASCAL 5.0 entwickelt.
+  Zugegebener ma·en ist die Tatsache, da· ich fÅr meine Programme meistens
+die Toolbox TURBO PROFESSIONAL benutze, mîglicherweise ein Hindernis fÅr
+Ihre eigene KreativitÑt, ich bin aber gerne bereit, Sie bei Bedarf in
+Hinsicht auf énderungen an meinen Programmen mit Rat und Tat zu unterstÅtzen.
+
+
+  Diese Diskette enthÑlt hauptsÑchlich das Programm GIF, einen GIF- File-
+viewer mit diversen Extras wie Diashow, Spielen von Liedern, öberblendungen, 
+Automatik.
+  FÅr alle Programme sind die Quellcodes enthalten, soweit es sich nicht um
+Toolboxen handelt, deren Rechte andere besitzen.
+
+  Weitere Viewer fÅr verschiedene Bilderformate sind weniger fÅr den direkten
+Gebrauch geschrieben, als sie Programmierern als Beispiel dienen kînnen, wie 
+solche Bilderformate zu lesen sind.
+
+  Des weiteren ist eine VGA- Toolbox fÅr TURBO PASCAL enthalten, die es er-
+mîglicht, diverse Super- VGA- Chips automatisch zu erkennen.
+  Diese Toolbox ist nicht nicht auf meinem Mist gewachsen, ich habe sie 
+Åbernommen von John Bridges. Das Original ist fÅr die Programmiersprache C
+geschrieben und wird von Computer Solutions vertrieben.
+
+
+  Die einzelnen Files sind selbstextrahierende Archive, die mit LHA(RC) 2.12
+erstellt wurden.
+
+  Detailierte Liste der Inhalte der Files :
+
+
+Listing of archive : !GIF.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  GIF.DOC          39042     14927  38.2% 91-10-16 15:46:04 a--w -lh5- B821
+  GIF.EXE          77888     39904  51.2% 91-10-16 18:39:20 a--w -lh5- FDB5
+  HAENDLER.TXT       655       393  60.0% 91-10-16 19:06:24 a--w -lh5- 931B
+  VGA.TXT           4052      1993  49.2% 91-10-15 02:57:12 a--w -lh5- F0C9
+  SSTOOLS.INI       4372      1425  32.6% 91-10-16 19:04:30 a--w -lh5- DD1A
+--------------  --------  -------- ------ -------- --------
+     5 files      126009     58642  46.5% 91-10-16 19:44:50
+
+
+Listing of archive : \GIF\!GIFSRC.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  GIFMINI.PAS      14315      5075  35.5% 91-08-20 15:09:28 ---w -lh5- EF00
+  GIFOVR.INC         274       209  76.3% 91-10-14 16:25:54 a--w -lh5- AC97
+  GIFLIED.PAS       3751      1292  34.4% 91-10-14 16:32:10 a--w -lh5- 3AED
+  GIFLOAD.PAS      12444      4003  32.2% 91-10-16 10:18:22 a--w -lh5- F87A
+  GIFTAST.PAS       8336      2655  31.8% 91-10-16 14:31:12 a--w -lh5- 5EC1
+  GIFBLEND.PAS     10132      2466  24.3% 91-10-16 16:11:40 a--w -lh5- FC56
+  GIFINI.PAS       12177      3550  29.2% 91-10-16 17:59:48 a--w -lh5- 6449
+  GIFDIA.PAS        7398      1831  24.7% 91-10-16 18:34:22 a--w -lh5- 5FDC
+  GIFVAR.PAS        3243      1285  39.6% 91-10-16 18:37:34 a--w -lh5- EE47
+  GIF.PAS           1415       752  53.1% 91-10-16 18:38:10 a--w -lh5- EA76
+  GIFMISC.PAS       2889      1152  39.9% 91-10-16 18:39:04 a--w -lh5- 3FE5
+  SVGA1.PAS        20245      4768  23.6% 91-10-14 21:18:34 a--w -lh5- 20D9
+  ADLIB.PAS         5614      1838  32.7% 91-06-21 22:15:34 ---w -lh5- DA56
+  DIRUNIT.PAS       1756       630  35.9% 91-05-31 02:25:02 ---w -lh5- A77E
+  PARRAY.PAS        5892      1594  27.1% 91-09-26 01:32:44 ---w -lh5- B49C
+  SELECTD.DOC       1426       748  52.5% 90-10-19 18:19:54 ---w -lh5- 0AD1
+  SELECTD.PAS       1191       535  44.9% 90-08-12 20:18:12 ---w -lh5- DFC1
+  SELECTD4.PAS      1670       703  42.1% 90-03-24 19:47:54 ---w -lh5- 0D9A
+  VIDEOID.OBJ        324       296  91.4% 90-05-07 17:18:42 ---w -lh5- D854
+--------------  --------  -------- ------ -------- --------
+    19 files      114492     35382  30.9% 91-10-16 19:38:58
+
+
+Listing of archive : \VGAKIT\!VGAKIT.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  VGAKIT.DOC        9339      2674  28.6% 90-10-11 14:05:42 a--w -lh5- DDA9
+  MODEL.H             37        37 100.0% 91-10-13 12:18:54 a--w -lh0- FC27
+  RDPOINT.ASM       1106       537  48.6% 91-10-13 14:57:26 a--w -lh5- 84FE
+  LINE.ASM          1529       649  42.4% 91-10-13 15:57:36 a--w -lh5- EA54
+  BANKS.ASM        10382      2926  28.2% 91-10-13 16:17:48 a--w -lh5- E24B
+  SVGAU.PAS         3302       901  27.3% 91-10-13 19:18:32 a--w -lh5- 558C
+  MODE13X.ASM       2001       961  48.0% 91-10-14 18:44:42 a--w -lh5- 2979
+  POINT.ASM         2765       772  27.9% 91-10-14 20:04:02 a--w -lh5- 56E4
+  TEST360.PAS       1902       844  44.4% 91-10-14 20:55:28 a--w -lh5- FB53
+  SVGA2.PAS        20493      4830  23.6% 91-10-14 21:18:56 a--w -lh5- 6963
+  TEST360.EXE      12736      7291  57.2% 91-10-14 21:19:30 a--w -lh5- 0A04
+  RDPOINT.OBJ        370       329  88.9% 91-10-13 14:57:30 a--w -lh5- 95CD
+  LINE.OBJ           352       301  85.5% 91-10-13 15:53:30 a--w -lh5- 9A9F
+  BANKS.OBJ         2338      1506  64.4% 91-10-13 16:17:52 a--w -lh5- 648C
+  MODE13X.OBJ        336       326  97.0% 91-10-14 18:44:50 a--w -lh5- F91D
+  POINT.OBJ          698       468  67.0% 91-10-14 20:03:12 a--w -lh5- 7E14
+--------------  --------  -------- ------ -------- --------
+    16 files       69686     25352  36.4% 91-10-16 19:40:00
+
+
+Listing of archive : \DIVERSE\!RGB.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  RGB.DOC           3874      1792  46.3% 91-09-17 17:55:34 ---w -lh5- 109F
+  RGB.EXE          44944     24577  54.7% 91-10-16 19:22:26 a--w -lh5- 4CA7
+  RGB.PAS           7252      2403  33.1% 91-10-16 19:22:22 a--w -lh5- 2455
+  RGB2TGA.DOC       1860       895  48.1% 91-09-17 18:21:34 ---w -lh5- 82CC
+  RGB2TGA.EXE       4096      2774  67.7% 91-08-14 15:26:30 ---w -lh5- 5E56
+  RGB2TGA.PAS       1309       622  47.5% 91-09-17 17:34:20 ---w -lh5- 9292
+--------------  --------  -------- ------ -------- --------
+     6 files       63335     33063  52.2% 91-10-16 19:34:34
+
+Listing of archive : \DIVERSE\!LBMSIZE.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  LBMSIZE.DOC       4333      1960  45.2% 91-09-17 16:52:32 ---w -lh5- EB01
+  LBMSIZE.EXE      22880     13688  59.8% 91-09-03 15:52:46 ---w -lh5- F2F7
+  LBMSIZE.PAS      14298      4056  28.4% 91-09-17 17:31:56 ---w -lh5- E80D
+--------------  --------  -------- ------ -------- --------
+     3 files       41511     19704  47.5% 91-10-16 19:32:50
+
+Listing of archive : \DIVERSE\!PCX.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  PCX.DOC           4081      1876  46.0% 91-09-17 17:56:48 ---w -lh5- A571
+  PCX.EXE          45168     24797  54.9% 91-10-16 19:22:08 a--w -lh5- B418
+  PCX.PAS          10791      2984  27.7% 91-10-16 19:22:04 a--w -lh5- 409C
+--------------  --------  -------- ------ -------- --------
+     3 files       60040     29657  49.4% 91-10-16 19:33:32
+
+Listing of archive : \DIVERSE\!LBM.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  LBM.DOC           4478      2051  45.8% 91-09-17 18:00:44 ---w -lh5- E1AB
+  LBM.EXE          49216     27049  55.0% 91-10-16 19:21:38 a--w -lh5- F513
+  LBM.PAS          13838      4081  29.5% 91-10-16 19:21:30 a--w -lh5- 8DD2
+  SNAPLBM.DOC       3769      1779  47.2% 91-09-17 16:53:18 ---w -lh5- 230C
+  SNAPLBM.EXE       9424      6256  66.4% 91-07-26 19:49:30 ---w -lh5- 3F48
+  SNAPLBM.PAS       6993      2382  34.1% 91-09-17 17:35:48 ---w -lh5- A081
+--------------  --------  -------- ------ -------- --------
+     6 files       87718     43598  49.7% 91-10-16 19:36:40
+
+Listing of archive : \DIVERSE\!UTIL.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  SVGA.PAS         18572      4398  23.7% 91-10-09 20:02:42 a--w -lh5- A7C9
+  VGARGB.ASM        1087       537  49.4% 91-08-13 15:24:58 ---w -lh5- 44F5
+  VGARGB.OBJ         355       308  86.8% 91-08-13 15:26:06 ---w -lh5- BB43
+--------------  --------  -------- ------ -------- --------
+     3 files       20014      5243  26.2% 91-10-16 19:41:20
+
+Listing of archive : \DIVERSE\!TGA.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  TGA.EXE          43920     24484  55.7% 91-10-16 19:23:04 a--w -lh5- 0D1C
+  TGA.PAS           8272      2578  31.2% 91-10-16 19:23:00 a--w -lh5- 5CB3
+  TGA32.DOC         1687       811  48.1% 91-09-17 18:25:12 ---w -lh5- 36D9
+  TGA32.EXE         3888      2587  66.5% 91-08-14 16:15:08 ---w -lh5- FB6D
+  TGA32.PAS         2218       807  36.4% 91-08-14 16:15:08 ---w -lh5- 01D2
+--------------  --------  -------- ------ -------- --------
+     5 files       59985     31267  52.1% 91-10-16 19:37:34
+
+Listing of archive : \DIVERSE\!UL.EXE
+
+  Name          Original    Packed  Ratio   Date     Time   Attr Type  CRC
+--------------  --------  -------- ------ -------- -------- ---- ----- ----
+  UL.DOC             868       537  61.9% 90-10-19 18:20:46 ---w -lh5- A2D3
+  UL.EXE           14576      7430  51.0% 91-10-16 19:26:20 a--w -lh5- 0D9E
+  UL.PAS           10527      2967  28.2% 91-10-16 19:26:18 a--w -lh5- 38B0
+--------------  --------  -------- ------ -------- --------
+     3 files       25971     10934  42.1% 91-10-16 19:38:12
+

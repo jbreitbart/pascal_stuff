@@ -1,0 +1,44 @@
+
+    Beschreibung fr das Programm TGA32.EXE   16.9.91
+
+  Dies File ist nicht Seitenformatiert
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+
+  ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+  บ                                                                    บ
+  บ Fr Programmierer wird der Quellcode in TURBO PASCAL mitgeliefert  บ
+  บ                                                                    บ
+  ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+  Dies Programm ist Public Domain, es darf kostenlos weitergegeben werden,
+ich erlaube auch explizit, Teile des Quellcodes fr andere Programme zu
+benutzen.
+  Das Programm zu verkaufen verbiete ich.
+  Eine angemessene Gebhr fr das Kopieren darf erhoben werden, ich halte
+aber DM 15.- oder mehr auch mit einer sch”nen Verpackung und einem 
+gedruckten Handbuch nicht mehr als angemessen fr eine Kopiergebhr, 
+sondern ich untersage eine derartige Ver”ffentlichung des Programms, die
+ich eindeutig als kommerzielle Verwertung ansehe.
+  Jeder, der dies Programm weitergibt, sollte genug Anstand besitzen,
+meinen Namen und meine Anschrift in diesem File nicht zu verndern oder
+zu entfernen bzw. dies File mitzukopieren.
+
+
+  Ein kleines Utility, das ein TARGA 24- Bit / Pixel- File in ein TARGA
+16- Bit / Pixel- File konvertiert.
+  Hierdurch wird der Platzbedarf um 30% verkleinert, die Farbaufl”sung
+wird zwar drastisch reduziert, eine optisch erkennbare Beeintrchtigung des
+Bildes ist aber nur in extremen Ausnahmefllen zu erkennen.
+
+
+  Das Programm wurde mit TURBO PASCAL 5.0 entwickelt.
+
+
+
+
+

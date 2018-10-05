@@ -1,0 +1,128 @@
+
+UNIT SVGAU;
+{$F+}
+
+
+INTERFACE
+
+
+USES  DOS;
+
+
+TYPE   VMREGS   = ARRAY[1..4] OF WORD;
+TYPE   VMARRAY  = ARRAY[1..5] OF VMREGS;
+
+CONST  VIDMODES : ARRAY[1..13] OF VMARRAY =
+       ({ VGATYP 1 = ATI }
+        ({ MODE 1 :  640 * 350 }(0,0,0,0),
+         { MODE 2 :  640 * 400 }($61,0,0,0),
+         { MODE 3 :  640 * 480 }($62,0,0,0),
+         { MODE 4 :  800 * 600 }($63,0,0,0),
+         { MODE 5 : 1024 * 768 }($64,0,0,0)),
+        { VGATYP 2 = EVEREX }
+        (($70,$13,0,0),($70,$14,0,0),($70,$30,0,0),($70,$31,0,0),(0,0,0,0)),
+        { VGATYP 3 = TRIDENT }
+        ((0,0,0,0),($5C,0,0,0),($5D,0,0,0),($5E,0,0,0),($62,0,0,0)),
+        { VGATYP 4 = VIDEO7 }
+        ((0,0,0,0),($6F05,$66,0,0),($6F05,$67,0,0),($6F05,$69,0,0),(0,0,0,0)),
+        { VGATYP 5 = PARADISE }
+        ((0,0,0,0),($5E,0,0,0),($5F,0,0,0),(0,0,0,0),(0,0,0,0)),
+        { VGATYP 6 = CHIPSTECH }
+        ((0,0,0,0),($78,0,0,0),($79,0,0,0),($7B,0,0,0),(0,0,0,0)),
+        { VGATYP 7 = TSENG }
+        (($2D,0,0,0),($2F,0,0,0),($2E,0,0,0),($30,0,0,0),($38,0,0,0)),
+        { VGATYP 8 = TSENG4 }
+        (($2D,0,0,0),($2F,0,0,0),($2E,0,0,0),($30,0,0,0),($38,0,0,0)),
+        { VGATYP  9 = AHEADA }
+        ((0,0,0,0),($60,0,0,0),($61,0,0,0),($62,0,0,0),($63,0,0,0)),
+        { VGATYP 10 = AHEADB }
+        ((0,0,0,0),($60,0,0,0),($61,0,0,0),($62,0,0,0),($63,0,0,0)),
+        { VGATYP 11 = OAKTECH }
+        ((0,0,0,0),(0,0,0,0),($53,0,0,0),($54,0,0,0),(0,0,0,0)),
+        { VGATYP 12 = CIRRUS }
+        ((0,0,0,0),(0,0,0,0),(0,0,0,0),(0,0,0,0),(0,0,0,0)),
+        { VGATYP 13 = USER DEFINED }
+        ((0,0,0,0),(0,0,0,0),(0,0,0,0),(0,0,0,0),(0,0,0,0))
+       );
+
+{ VGATYP :
+  1 = ATI
+  2 = EVEREX
+  3 = TRIDENT
+  4 = VIDEO7
+  5 = PARADISE
+  6 = CHIPSTECH
+  7 = TSENG
+  8 = TSENG4
+  9 = AHEADA
+ 10 = AHEADB
+ 11 = OAKTECH
+ 12 = CIRRUS
+}
+VAR   CURBK,VGA512,VGATYP  : WORD;
+      XWID,YWID,MINX,MINY,
+      MAXX,MAXY            : WORD;
+
+
+FUNCTION  WHICHVGA:BYTE;
+PROCEDURE NEWBANK(BANK:WORD);
+
+PROCEDURE POINT(X,Y,COL:WORD);
+PROCEDURE XPOINT(X,Y,COL:WORD);
+PROCEDURE POINT13X(X,Y,COL:WORD);
+
+FUNCTION  RDPOINT(X,Y:WORD):BYTE;
+FUNCTION  RDPOINT13X(X,Y:WORD):BYTE;
+
+PROCEDURE BLINE(X1,Y1,X2,Y2,COL:WORD;FUNC:POINTER);
+
+PROCEDURE SETVMODE(MODE:BYTE);
+
+
+IMPLEMENTATION
+
+
+VAR   CIRRUS,VIDEO7,TSENG,TSENG4,
+      PARADISE,CHIPSTECH,TRIDENT,
+      ATIVGA,EVEREX,AHEADA,AHEADB,
+      OAKTECH                      : WORD;
+
+
+{$L BANKS}
+PROCEDURE NEWBANK(BANK:WORD);     EXTERNAL;
+FUNCTION  WHICHVGA:BYTE;          EXTERNAL;
+
+{$L POINT}
+PROCEDURE POINT(X,Y,COL:WORD);    EXTERNAL;
+PROCEDURE XPOINT(X,Y,COL:WORD);   EXTERNAL;
+PROCEDURE POINT13X(X,Y,COL:WORD); EXTERNAL;
+
+{$L RDPOINT}
+FUNCTION  RDPOINT(X,Y:WORD):BYTE;    EXTERNAL;
+FUNCTION  RDPOINT13X(X,Y:WORD):BYTE; EXTERNAL;
+
+{$L LINE}
+PROCEDURE BLINE(X1,Y1,X2,Y2,COL:WORD;FUNC:POINTER); EXTERNAL;
+
+
+PROCEDURE SETVMODE(MODE:BYTE);
+VAR   R  : REGISTERS;
+BEGIN
+  IF MODE = 0 THEN BEGIN
+    R.AX := $13;
+    R.BX := 0;
+    R.CX := 0;
+    R.DX := 0;
+  END ELSE BEGIN
+    R.AX := VIDMODES[VGATYP][MODE][1];
+    R.BX := VIDMODES[VGATYP][MODE][2];
+    R.CX := VIDMODES[VGATYP][MODE][3];
+    R.DX := VIDMODES[VGATYP][MODE][4];
+  END;
+  INTR($10,R);
+END; { SETVMODE }
+
+
+END.
+
+

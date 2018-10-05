@@ -1,0 +1,108 @@
+                          BUFFERS
+                          -------
+
+Diese Unit implementiert einen verlagerbaren Memory-Manager
+fr die Unit EDITORS. Am Ende des Heap wird ein fester
+Speicherbereich reserviert, dessen Gr”áe (in Paragraphen) von 
+BufHeapSize bestimmt ist. Der Speicherplatz wird durch Aufrufe
+von NewBuffer und SetBufferSize zugewiesen. Der Vorteil der 
+Verlagerung des Memory-Managers besteht darin, daá kein Platz
+durch Fragmentierung vergeudet wird. Leider kann nur ein 
+Zeiger auf diesen Speicherbereich existieren, wenn nicht 
+extreme Vorsichtsmaánahmen ergriffen werden.
+
+Wie bei den meisten verlagerbaren Memory-Managern weist BUFFERS
+den Speicherplatz dem sogenannten Master-Zeiger zu. Dieser zeigt
+auf die aktuelle Position des Puffers und wird bei Verlagerungen
+aktualisiert. Der Master-Zeiger, der an die Prozedur NewBuffer
+bergeben wird, ist der einzige Zeiger auf diesen Speicherbereich.
+Wird er in einer Zuweisung oder als Parameter kopiert, kann die
+Kopie auf nicht mehr aktuelle Speicherstellen zeigen. Deshalb wird
+anstatt einer Kopie ein Zeiger auf den Master-Zeiger verwendet, wie
+
+  CopyPtr = @MstrPtr;
+
+Die Kopie wird bei ihrer Verwendung doppelt referenziert
+
+  CopyPtr^^ := {Wert};
+
+so daá alle Referenzen auf den zugewiesenen Speicher ber den
+Master-Zeiger erfolgen. Bitte beachten Sie, daá nur wenige
+Speicherzuweisungen diese Voraussetzungen erfllen und deshalb
+diese Unit den Heap-Manager von Turbo Pascal nicht ersetzen soll.
+
+Vorsicht bei Zeigern, die mit BUFFERS zugewiesen wurden!
+Es ist unklug, eine Kopie des Master-Zeigers fr gltig zu halten.
+Damit kann man unsystematische, schwer zu ortende Fehler erzeugen.
+Normalerweise sollte wie in EDITORS nur der Master-Zeiger verwendet
+werden.
+
+BUFFERS ist nur ein einfacher Memory-Manager, weil die Verlagerung
+von Puffern bei der Freigabe oder der Gr”áenver„nderung anderer
+Puffer nicht minimiert. Die Puffer werden im Pufferbereich in der
+Reihenfolge ihrer Zuweisung positioniert. Bei einer Gr”áen-
+ver„nderung werden die Puffer oberhalb entsprechend verlagert. Da
+dies Zeit braucht, soll besonders die Gr”áe von Puffern m”glichst
+wenig ver„ndert werden.
+
+
+                            Variablen
+                            ---------
+
+BufHeapSize: Word = 0;
+
+  Der Speicherumfang (in Paragraphen), den diese Unit verwaltet.
+  Diese Variable muá vor dem Aufruf von InitBuffers initialisiert
+  sein.
+
+BufHeapPtr: Word = 0;
+
+  Segment am Beginn des Puffers.
+
+BufHeapEnd: Word = 0;
+
+  Segment am Ende des Puffers.
+
+
+                 Prozeduren und Funktionen
+                 -------------------------
+
+procedure InitBuffers;
+
+  Weist einen Speicherblock vom Ende des Heap fr Puffer zu.
+  Die Gr”áe des Blocks steht beim Aufruf dieser Routine in
+  BufHeapSize (in Paragraphen).
+
+procedure DoneBuffers;
+
+  Gibt den von InitBuffers reservierten Speicherbereich auf dem
+  Heap frei.
+
+procedure NewBuffer(var P: Pointer);
+
+  Weist dem bergebenen Zeiger einen Puffer zu. Der bergebene
+  Zeiger wird Master-Zeiger des Puffers. Eine Referenz auf die
+  Zeigeradresse wird gespeichert. Bei einer neuen Pufferposition
+  wird der Zeiger aktualisiert. Die vorgegebene Puffergr”áe von
+  Null kann ber SetBufferSize ge„ndert werden. Bei der Freigabe
+  oder Gr”áenver„nderung eines Puffers „ndert sich die Position
+  aller folgenden Puffer. Jeder Puffer hat 16 Byte (einen Para-
+  graphen) Overhead, worin die Puffergr”áe und die Adresse des
+  Master-Zeigers gespeichert sind.
+
+procedure DisposeBuffer(P: Pointer);
+
+  Dealloziert den Puffer fr einen gegebenen Zeiger, der von
+  NewBuffer zugewiesen wurde. Der Speicherbereich ist fr andere
+  Puffer frei. Der Master-Zeiger aller folgenden Puffer „ndert sich.
+
+function GetBufferSize(P: Pointer): Word;
+
+  Gibt die Gr”áe des Puffers fr diesen Zeiger, der ursprnglich
+  mit NewBuffer zugewiesen sein muá.
+
+function SetBufferSize(P: Pointer; Size: Word): Boolean;
+
+  Vergr”áert oder verkleinert den gegebenen Puffer. Der Zeiger muá
+  ursprnglich mit NewBuffer zugewiesen sein. Nach der Ver„nderung
+  „ndert sich der Master-Zeiger aller folgenden Puffer.

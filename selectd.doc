@@ -1,0 +1,36 @@
+
+     Paul Schubert
+     Rottweiler Str. 8
+6000 Frankfurt 1
+     Tel.: 069 / 231145
+
+
+    Beschreibung der UNIT SELECTD :
+
+  SELECTD dient zum automatischen Einstellen des Directories, auf dem
+sich ein Programm befindet. Dies ist extrem nÅtzlich, um z.B.
+Parameterfiles fÅr ein Programm immer aufzufinden, ohne sie ins
+Rootdirectory von C: schreiben zu mÅssen.
+  SELECTD mu· eigentlich nur per USES eingebunden werden. Das Programm
+hat dann sein eigenes Directory und Laufwerk als Default- Directory,
+auch wenn es von DOS auf dem PATH gefunden wurde. Nach Programmende
+wird automatisch wieder das aufrufende Laufwerk und Directory
+eingestellt.
+
+  Dem Programm stehen 2 Variable von Typ STRING[64] zur VerfÅgung :
+QUELLDIR ist das Directory, von dem aus das Programm aufgerufen wurde.
+ZIELDIR  ist das Directory, auf dem sich das Programm befindet.
+
+  Die Prozedur SELECTDNOEXIT schaltet die EXIT- Prozedur von SELECTD
+ab, soda· das Programm ein Directory einstellen kann, das nach
+Programmende eingestellt bleibt - das aufrufende Directory wird nicht
+wiederhergestellt.
+
+  SELECTD kann mit TURBO PASCAL ab Version 5.0 compiliert werden; die
+Benutzung von PARAMSTR(0) vereinfacht das Auffinden des Programm-
+Directories.
+  FÅr TURBO PASCAL 4.0 kann die UNIT SELECTD4 verwandt werden.
+  Das Ganze ist natÅrlich keine gro·artige Leistung, ich selbst benutze
+die UNIT SELECTD aber recht gern.
+
+

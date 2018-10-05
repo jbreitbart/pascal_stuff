@@ -1,0 +1,103 @@
+Kurzanleitung zum Programm E322.EXE:
+
+Wenn das Programm ohne Parameter aufgerufen wird, erscheint 
+eine kurze Syntax-Beschreibung:
+
+----------------------------------------------------------------
+Syntax: E322 <Operation> [K|W|G] [-c#] [-p####] [-d] <Filename>
+
+ <Operation> = S(chreibe)  - Daten in die TK-Anlage
+               L(ese)      - Daten von der TK-Anlage
+               E(mulation) - einer TK-Anlage
+             Optionen fÅr Lesen:
+      K      = Konfiguration
+      W      = Kurzwahlen
+      G      = GebÅhren
+             allgemeine Optionen:
+      -cn    = Com-Port n (z.B. -c2), Default: 1
+      -p#### = Codewort ####, Default: 0000
+      -d     = Debug-Modus
+
+----------------------------------------------------------------
+
+Die mit <Filename> angegebene Datei wird - je nach Operation -
+gelesen oder geschrieben. Beim Schreibvorgang wird OHNE PRöFUNG 
+Åberschrieben!
+
+Die Operationen kînnen beliebig abgekÅrzt werden:
+
+  l = le = lese = ...
+
+************************************************************
+
+Beispiel 1:
+
+(Der PC ist an der Eumex 322 angeschlossen.)
+
+Das Kommando
+
+  e322 lese k test.cnf   (kurz: e322 l k test.cnf)
+
+erzeugt die Datei test.cnf, z.B. mit folgendem Inhalt:
+
+AA m 
+RZ i0 m i1 m i2 m i3 m i4 m i5 m i6 m i7 m i8 m i9 m 
+AB n11 r0 n12 r0 n13 r0 n14 r0 n15 r0 n16 r0 n17 r0 n18 r0 n19 r0 n21 r0 n22 r0 n23 r0 n24 r0 n25 r0 n26 r0 n27 r0 n28 r0 n29 r0 
+AG s 
+FB 0 
+GS n11 0 n12 0 n13 0 n14 0 n15 0 n16 0 n17 0 n18 0 n19 0 n21 0 n22 0 n23 0 n24 0 n25 0 n26 0 n27 0 n28 0 n29 0 
+GT g0012 
+
+.... und so weiter ....
+
+Die Bedeutung der einzelnen Register ist auf meine Web-Seite 
+
+  http://home.t-online.de/home/h.graefe/e322prot.htm
+
+dokumentiert.
+
+Man kann jetzt mit einem Text-Editor diese Datei Ñndern, 
+z.B. die erste MSN:
+
+RZ i0 m123456
+
+und dann mit 
+
+  e322 schreibe test.cnf
+  
+an die Telefonanlage senden. Beim Senden ist keine Auswahl 
+(Konfiguration oder Kurzwahlen) erforderlich. 
+
+Anstatt die gelesenen Daten zu Ñndern, kann man aber auch direkt 
+eine Datei anlegen, die nur die zu Ñndernden Parameter enthÑlt.
+(Es mÅssen nicht immer alle Register Åbertragen werden.)
+Eine Datei zum Lîsen der Entgeldsummen braucht nur die Zeile
+
+GB L
+
+zu enthalten.
+
+Wenn eine solche Datei zur Eumex Åbertragen wird, so prÅft das 
+Programm, ob es sich um einen Lîsch-Befehl handelt (L). Ist das 
+nicht der Fall, so wird eine énderungs-Befehl (A) vor die Register-
+Parameter gesetzt.
+
+************************************************************
+
+Beispiel 2:
+
+(Zwei Computer sind Åber Nullmodem verbunden, auf dem einen lÑuft 
+die Konfigurationssoftware von der Telekom.)
+
+Durch Eingabe von
+
+  e322 emu test.cnf
+  
+wird die Eumex-Emulation auf dem anderen Computer gestartet. 
+Werden nun von der Telekom-Software Daten gesendet, so werden 
+diese in der angegebenen Datei gespeichert.
+
+Fragt umgekehrt die Telekom-Software Einstellungen der Eumex 
+ab, so sendet die Emulation den Inhalt der Datei (unabhÑngig 
+von der Art der Anforderung!)
+

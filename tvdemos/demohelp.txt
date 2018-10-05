@@ -1,0 +1,544 @@
+.topic NoContext=0
+ Turbo Vision Demonstration Ü
+  ßßßßßßßßßßßßßßßßßßßßßßßßßßß
+Willkommen bei Turbo Vision!  Dieses 
+Demonstrationsprogramm zeigt Ihnen 
+einige Funktionen von Turbo Vision.  
+Das Haupt-Men erreicht man ber 
+Alt-Leertaste, alle anderen Mens 
+mit Alt-Z, wobei Z fr den ersten
+Buchstaben des Mens steht. Z. B. 
+erreicht man das Men "File" mit Alt-F.
+
+Diesen Bildschirm verlassen Sie mit ESC.
+
+.topic Viewer=2
+ File Viewer Ü
+  ßßßßßßßßßßßß
+Der File Viewer zeigt den Inhalt einer 
+Textdatei. Mit den Pfeiltasten setzen Sie 
+den Cursor an die Stelle der Datei, die Sie
+sehen wollen. Der Befehl {File³Open:FOpen} 
+”ffnet eine Datei.
+
+  Up         Eine Zeile aufw„rts
+  Down       Eine Zeile abw„rts 
+  Right      Eine Spalte nach rechts
+  Left       Eine Spalte nach links
+  PgUp       Eine Seite aufw„rts 
+  PgDn       Eine Seite abw„rts 
+  Ctrl-PgUp  Dateibeginn
+  Ctrl-PgDn  Dateiende
+
+Ein File Viewer kann mit dem Men {Windows} 
+verkleinert und auf dem Bildschirm an eine 
+neue Stelle bewegt werden.
+
+.topic Puzzle
+ Puzzle Ü
+  ßßßßßßß
+Puzzle ist ein Spiel. Die Buchstaben 
+sollen dabei in folgendes Muster
+gebracht werden:
+
+    A  B  C  D
+    E  F  G  H
+    I  J  K  L
+    M  N  O
+
+Wird ein Quadrat neben der leeren Fl„che 
+mit der Maus angeklickt, bewegt es sich 
+an die Leerstelle. Das Drcken einer der
+Cursortasten bringt das Buchstabenquadrat 
+in der Richtung der Cursortaste in die 
+Leerstelle. Der Z„hler fr die Spielzge wird 
+bei jeder Bewegung erh”ht.
+
+
+.topic Calculator
+ Rechner Ü
+  ßßßßßßßßßßß
+Der Rechner beherrscht die Grundfunktionen 
+Addieren, Subtrahieren, Multiplizieren und 
+Dividieren. Er kann sowohl mit der Tastatur 
+als auch mit der Maus bedient werden. Die 
+Taste 'C' l”scht den Speicherinhalt des Rechners, 
+die Taste '' das letzte Zeichen und die 
+Taste 'ñ' macht negative Werte positiv. Die
+Tastaturentsprechung des Mausfeldes 'ñ' ist '_'.
+
+.topic Calendar
+ Kalender Ü
+  ßßßßßßßßß
+Im Kalender sieht man den aktuellen Monat, 
+in dem der heutige Tag hervorgehoben ist. 
+Der vorhergehende und der folgende Monat sind
+mit den Tasten '+' oder '-' zu sehen.
+
+.topic AsciiTable
+ ASCII-Tabelle Ü
+  ßßßßßßßßßßßß
+Die ASCII-Tabelle enth„lt den ganzen IBM PC 
+Zeichensatz. Das aktuelle Zeichen erscheint 
+blinkend. Unter der Tabelle sieht man dazu 
+den hexadezimalen und den dezimalen ASCII-Wert.
+Ein neues Zeichen wird durch Eingabe auf der 
+Tastatur, durch Anklicken mit der Maus oder 
+mit den Pfeiltasten gew„hlt.
+
+.topic System
+ ğ (System) Men Ü    (Alt-Leertaste)
+  ßßßßßßßßßßßßßßßß
+Das Men System erscheint links auf dem 
+Men-Balken. Ihm ist das Symbol ğ zugeordnet.
+
+Das Systemmen enth„lt die Punkte
+
+  {About:SAbout}          {Puzzle:SPuzzle}
+  {Calendar:SCalendar}    {Ascii Table:SAsciiTable}
+  {Calculator:SCalculator}
+
+.topic SAbout
+ ğ³About Ü
+  ßßßßßßßß
+Der Menpunkt About des ğ (System) Mens 
+zeigt Informationen zu Copyright und der 
+aktuellen Version.
+
+Sie entfernen diese Informationen mit Esc, 
+Leertaste, Enter oder durch Anklicken von OK.
+
+.topic SPuzzle
+ ğ³Puzzle Ü
+  ßßßßßßßßß
+Der Menpunkt Puzzle startet ein {puzzle} Spiel.
+
+.topic SCalendar
+ ğ³Kalender Ü
+  ßßßßßßßßßßß
+Der Menpunkt Kalender ”ffnet einen {Kalender}, 
+der den aktuellen Monat sowie den Monat davor 
+und danach zeigt.
+
+.topic SAsciiTable
+ ğ³ASCII-Tabelle Ü
+  ßßßßßßßßßßßßßß
+Der Menpunkt ASCII ”ffnet eine 
+{ASCII-Tabelle:AsciiTable} mit dem 
+IBM PC Zeichensatz.
+
+.topic SCalculator
+ ğ³Rechner Ü
+  ßßßßßßßßßßßßß
+Der Menpunkt Rechner startet einen {Rechner} 
+mit vier Funktionen auf dem Bildschirm.
+
+.topic File
+ File  (Alt-F) Ü
+  ßßßßßßßßßßßßßß
+Der Menpunkt File dient zum ™ffnen von 
+Dateien, Wechseln des Verzeichnisses und 
+Verlassen des Programms.
+
+ {Open:FOpen}      {Change Dir:FChangeDir}    {FExit}
+
+.topic FOpen
+ File³Open  (F3) Ü
+  ßßßßßßßßßßßßßßßß
+Der Befehl Open zeigt ein Dialogfenster an, 
+in dem Sie die gewnschte Datei w„hlen 
+k”nnen {file viewer:Viewer}.
+
+Das Dialogfenster {Open a File:FOFileOpenDBox} 
+enth„lt:
+
+ ş ein Eingabefeld {input box:FOName} mit 
+   einer History-Liste
+ ş ein Wahlfeld {list box:FOFiles} mit dem 
+   Verzeichnis
+ ş ein {Cancel:CancelBtn} Ende-Feld
+ ş das {Open:FOOpenBtn} Aktionsfeld
+ ş ein Informationsfeld ber die gew„hlte Datei
+
+
+.topic FChangeDir
+ File³Change Dir...Ü
+  ßßßßßßßßßßßßßßßßßß
+File³Change Dir bringt das Dialogfenster 
+{Change Directory:FCChDirDBox},
+in dem Sie ein neues Verzeichnis setzen k”nnen.
+
+.topic FDosShell
+ File³DOS Shell Ü
+  ßßßßßßßßßßßßßßß
+Der Befehl DOS Shell verl„át das Programm 
+tempor„r und bringt Sie zur DOS-Ebene.
+
+Mit EXIT auf der DOS-Ebene kehren Sie zu 
+Turbo Vision zurck.
+
+.topic FExit
+ File³Exit Ü     (Alt-X)
+  ßßßßßßßßßß
+Der Befehl Exit beendet dieses Programm.
+
+.topic Windows
+ Window Ü    (Alt-W)
+  ßßßßßßß
+Das Men Window enth„lt Befehle, die Fenster 
+schlieáen, bewegen oder sonstwie betreffen.
+
+Die meisten Fenster dieses Programms 
+enthalten einen Rollbalken, ein Feld 
+zum Schlieáen des Fensters und Symbole 
+zum Zoomen.
+
+
+ Befehle zu Fensterverwaltung
+ ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+
+ {Size/Move:WSizeMove}    {Zoom:WZoom}
+ {Tile:WTile}             {Cascade:WCascade}
+ {Next:WNext}             {Previous:WPrevious}
+ {Close:WClose}
+
+.topic WSizeMove
+ Window³Size/Move Ü     (Ctrl-F5)
+  ßßßßßßßßßßßßßßßßß
+Mit diesem Befehl „ndern Sie die Gr”áe 
+oder die Position des Fensters.
+
+ ÜÜÜÜÜÜ
+  Size
+ ßßßßßß
+Durch Drcken der Shift-Taste zusammen 
+mit den Pfeiltasten „ndern Sie die Gr”áe 
+des aktiven Fensters.
+
+Falls das Fenster eine Mausecke hat, k”nnen 
+Sie auch mit dieser das Fenster in die 
+gewnschte Gr”áe ziehen.
+
+ ÜÜÜÜÜÜ
+  Move
+ ßßßßßß
+Nach Wahl von Window³Size/Move verschieben Sie 
+das aktive Fenster mit den Pfeiltasten. An der 
+gewnschten Position drcken Sie Enter als Best„tigung.
+
+šber den Titel-Balken bewegen Sie das Fenster mit
+Hilfe der Maus.
+
+.topic WZoom
+ Window³Zoom Ü   (F5)
+  ßßßßßßßßßßßß
+Zoom erweitert das aktive Fenster auf Maximalgr”áe. 
+Hat es diese schon erreicht, wird die frhere Gr”áe 
+wieder hergestellt.
+
+Ein Doppelklick mit der Maus im Titel-Balken (auáer 
+auf einem Symbol) erfllt denselben Zweck.
+
+
+.topic WTile
+ Window³Tile Ü
+  ßßßßßßßßßßßß
+Mit Window³Tile sehen Sie alle File Viewer auf 
+einem Bildschirm.
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ ÉÍÍÍÍÍÍÍÍÍÍÍÍ1ÍÍ»ÚÄÄÄÄÄÄÄÄÄÄÄÄ2ÄÄ¿ ³
+ ³ º               º³               ³ ³
+ ³ º               º³               ³ ³
+ ³ º               º³               ³ ³
+ ³ º               º³               ³ ³
+ ³ ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ ³
+ ³ ÚÄÄÄÄÄÄÄÄÄÄÄÄ3ÄÄ¿ÚÄÄÄÄÄÄÄÄÄÄÄÄ4ÄÄ¿ ³
+ ³ ³               ³³               ³ ³
+ ³ ³               ³³               ³ ³
+ ³ ³               ³³               ³ ³
+ ³ ³               ³³               ³ ³
+ ³ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+         Fenster nebeneinander
+
+.topic WCascade
+ Window³Cascade Ü
+  ßßßßßßßßßßßßßßß
+Mit Window³Cascade stapeln Sie alle File Viewer 
+in einem Bildschirm.
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ1Ä¿
+ ³ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ2Ä¿
+ ³³ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ3Ä¿
+ ³³³ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ4Í»
+ ³³³º                         º
+ ³³³º                         º
+ ³³³º                         º
+ ³³³º                         º
+ ³³³º                         º
+ ÀÀÀÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+
+        Gestapelte Fenster
+
+.topic WNext
+ Window³Next Ü
+  ßßßßßßßßßßßß
+Mit Next erreichen Sie das n„chste Fenster.
+
+.topic WPrevious
+ Window³Previous Ü
+  ßßßßßßßßßßßßßßßß
+Mit Previous erreichen Sie das vorige Fenster.
+
+.topic WClose
+ Window³Close Ü    (Alt-F3)
+  ßßßßßßßßßßßßß
+Close schlieát das aktive Fenster.
+
+Sie k”nnen auch das Symbol Close in der 
+oberen rechten Ecke anklicken.
+
+.topic Options
+ Options  (Alt-O) Ü
+  ßßßßßßßßßßßßßßßßß
+Mit dem Men Options stellen Sie Vorgaben fr Farben
+{color:OColors} und die Maus {mouse:OMouse} neu ein.
+
+.topic OMouse
+ Options³Mouse... Ü
+  ßßßßßßßßßßßßßßßßß
+Der Befehl Mouse zeigt das Dialogfenster 
+{Mouse Options:OMMouseDBox}, in dem die
+Mausfunktionen eingestellt werden:
+
+ ş Geschwindigkeit des Doppelklicks
+ ş linke oder rechte Maustaste aktiv
+
+.topic OColors
+ Options³Colors... Ü
+  ßßßßßßßßßßßßßßßßßß
+Der Befehl Colors zeigt das Dialogfenster 
+{Colors dialog:OCColorsDBox}, in dem die 
+Bildschirmfarben eingestellt werden.
+
+.topic OSaveDesktop
+ Options³Save Desktop Ü
+  ßßßßßßßßßßßßßßßßßßßßß
+Speichert den Inhalt aller offenen Fenster 
+in der Datei TVDEMO.DSK. šber 
+{Options³Restore Desktop:ORestoreDesktop} 
+wird sie wieder geladen.
+
+.topic ORestoreDesktop
+ Options³Restore Desktop Ü
+  ßßßßßßßßßßßßßßßßßßßßßßßß
+Wiederherstellen des Zustands aller vorher 
+offenen Fenster aus der Datei TVDEMO.DSK. 
+Mit dem Befehl {Options³Save Desktop:OSaveDesktop} 
+wird diese Datei gespeichert.
+
+.topic FOFileOpenDBox
+ Dialogfenster Open a File Ü
+  ßßßßßßßßßßßßßßßßßßßßßßßßßß
+Das Dialogfenster Open a File enth„lt ein 
+Eingabefeld, eine Dateiliste {file list:FOFiles},
+ein Informationsfeld, das Ende-Symbol 
+{Cancel:CancelBtn}, ein Aktionsfeld 
+({Open:FOOpenBtn}) und eine History-Liste,
+die mit dem Eingabefeld {Name inputbox:FOName} 
+verbunden ist.
+
+.topic FOName
+ ÚÄ Name ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                                 ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Im Eingabefeld Name gibt man den Namen der zu 
+ladenden Datei ein oder die Maske, mit der in 
+der Dateiliste gesucht wird (z. B. *.*).
+
+.topic FOFiles
+ Ú Files ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                                 ³
+ ³  FILENM01.PAS  ³  FILENM09.PAS  ³
+ ³  FILENM02.PAS  ³  FILENM10.PAS  ³
+ ³  FILENM03.PAS  ³  FILENM11.PAS  ³
+ ³  FILENM04.PAS  ³  FILENM12.PAS  ³
+ ³  FILENM05.PAS  ³  ..            ³
+ ³  FILENM06.PAS  ³  \MOREXAMP     ³
+ ³  FILENM07.PAS  ³  \TOURS        ³
+ ³  FILENM08.PAS  ³  \ANSWERS.DIR  ³
+ ³  ±±±ş±±±±±±±±±±±±±±±±±±±±±±   ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Die Dateiliste enth„lt die Namen des aktuellen 
+und des bergeordneten Verzeichnisses sowie die 
+der Unterverzeichnisse (soweit die Namen zu der 
+Maske passen).
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ C:\TP\EXAMPLES\*.PAS                     ³
+ ³ HELLO.PAS       52  Jul 14,1990  12:00pm ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+In der Dateiinformation steht der Pfad, der 
+Dateiname, das Datum, die Erstellungszeit und 
+die Gr”áe der Datei.
+
+Diese Informationen sind nicht w„hlbar.
+
+.topic FOOpenBtn
+ ÚÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [ Open ] ³
+ ÀÄÄÄÄÄÄÄÄÄÄÙ
+Das Symbol Open ”ffnet ein neues Viewer-Fenster 
+und zeigt die gew„hlte Datei in ihm an.
+
+.topic CancelBtn
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [ Cancel ] ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+Cancel l„át alles wie zuvor, das Dialogfenster 
+wird entfernt.
+
+(Esc dient zum selben Zweck, auch wenn das 
+Symbol Cancel nicht erscheint.)
+
+.topic OpenBtn
+ ÚÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [ Open ] ³
+ ÀÄÄÄÄÄÄÄÄÄÄÙ
+
+Beim Symbol Open ”ffnet TVDEMO ein 
+neues {file viewer:Viewer}-Fenster 
+und zeigt die gew„hlte Datei in ihm an.
+
+.topic FCChDirDBox
+ Dialogfenster Change Directory Ü
+  ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+Das Dialogfenster Change Directory enth„lt 
+ein Eingabefeld, ein Listenfeld, die Symbole 
+OK und Help sowie Chdir und Revert.
+
+ Ú Directory Name ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                                     ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Hier tippt man den Pfad des neuen Verzeichnisses ein.
+
+ Ú Directory Tree ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³   Drives                            ³
+ ³   ÀÄÂC:\                            ³
+ ³     ÀÄÂTP                           ³
+ ³       ÀÄÄTVISION                    ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Im Verzeichnisbaum bentzen Sie den Wahlbalken 
+und Enter.
+
+Mit der Tastatur w„hlen Sie mit Enter das 
+gewnschte Verzeichnis und verlassent mit 
+OK oder Esc das Dialogfenster.
+
+ ÚÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [Chdir ] ³
+ ÀÄÄÄÄÄÄÄÄÄÄÙ
+Chdir wechselt das aktuelle Verzeichnis, wenn 
+ein neues gew„hlt oder eingetippt wurde.
+
+ ÚÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [Revert] ³
+ ÀÄÄÄÄÄÄÄÄÄÄÙ
+Revert geht zum vorigen Verzeichnis zurck, 
+wenn das Dialogfenster noch nicht verlassen 
+wurde.
+
+.topic OMMouseDBox
+ Dialogfenster Mouse Options Ü
+  ßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+Dieses Dialogfenster besteht aus einem 
+Markierungsfeld, einem Gleitregler und den 
+Symbolen OK und Cancel.
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ Mouse Double Click       ³
+ ³ Slow     Medium     Fast ³
+ ³ ±±±±±±±±±±±ş±±±±±±±±±± ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Der Gleitregler Mouse Double Click stellt 
+die Zeit zwischen Doppelklicks ein.
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ [X] Reverse Mouse Buttons ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Das Auswahlfeld Reverse Mouse Buttons vertauscht
+die Funktionen der rechten und der linken 
+Maustaste.
+
+ Siehe auch:
+ ÍÍÍÍÍÍÍÍÍÍÍ
+ {Options³Mouse... menu command:OMouse}
+
+.topic OCColorsDBox
+ Hilfe zum Dialogfenster ColorsÜ
+  ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+Das Dialogfenster Colors besteht aus zwei 
+Listenfeldern, einem Textbereich, den Symbolen 
+OK, Cancel und:
+
+ ş Bei Farb- und S/W-Systemen: zwei Farbpaletten
+ ş Bei monochromen Systemen: Auswahlfeldern 
+   statt Paletten
+
+Hier k”nnen Sie die Farben verschiedener 
+Programmteile „ndern:
+
+ ÚÄ Group ÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³   Desktop           ³
+ ³   Mens            ş³
+ ³   Dialogs/Calc     ±³
+ ³   Puzzle           ±³
+ ³   Kalender         ±³
+ ³   Ascii-Tabelle    ±³
+ ³                     ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Die Liste Group enth„lt die Namen der 
+Programmbereiche, deren Farbe ge„ndert
+werden kann.
+
+ ÚÄ Item ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³   Color             ³
+ ³                    ş³
+
+Beim W„hlen einer Group zeigt das Listenfeld 
+Item die Namen der verschiedenen Views dieses 
+Bereichs.
+
+ ÚVordergrund ¿   ÚHintergrund ¿
+ ³ °±²°±²°±²° ³   ³ ²°±²°±²°±² ³
+ ³ ²°±²°±²°±² ³   ³ °±²°±²°±²° ³
+ ³ ±²°±²°±²°± ³   ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Auf Schwarz/Weiá-Systemen wird mit diesen 
+Paletten die Bildschirmdarstellung ge„ndert.
+
+ Ú Colors ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³  (ù) Mono low        ³
+ ³  ( ) Mono high       ³
+ ³  ( ) Mono underscore ³
+ ³  ( ) Mono inverse    ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+Auf monochromen Systemen werden mit den 
+Auswahlfeldern Colors die Zeichenattribute
+ge„ndert.
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ Text Text Text ³
+ ³ Text Text Text ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Auf allen Systemen zeigt ein Textfeld ber 
+dem Symbol Help die aktuelle Farbe oder 
+das aktuelle Attribut.
+
+Die nderungen werden erst beim Verlassen 
+des Dialogfensters mit OK bernommen.
+
+

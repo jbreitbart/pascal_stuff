@@ -1,0 +1,86 @@
+
+
+      Paul Schubert
+      Rottweiler Str. 8
+D6000 Frankfurt /M 1
+Tel.: 069 / 231145
+
+
+  Das Programm GIF besitzt eine automatische Erkennung fr diverse ( nicht
+alle ) VGA- Karten, die eine h”here Aufl”sung als 320 * 200 Pixel in 256
+Farben untersttzen.
+
+  Ich benutze ein Paket von Assembler- Routinen, die von
+
+John Bridges  5/4/1990
+
+CIS:73307,606
+GENIE:J.BRIDGES
+
+  stammen.
+  Dies Paket wird vertrieben von COMPUTER SOLUTIONS und ist sowohl Public
+Domain als auch ursprnglich fr die Programmiersprache C geschrieben.
+  Die nderungen, die ich fr die Benutzung in TURBO PASCAL machen muáte,
+waren minimal.
+
+  Das Softwarepaket erkennt 13 VGA- Chips und stellt fr 12 dieser Chips
+( auáer CIRRUS ) 10 verschiedene S„tze von Video- Modi zur Verfgung.
+  Genauso wichtig, wie die korrekte Nummer des Video- Modus ist brigens die
+exakte Art und Weise, in der die mehreren 64-k Byte- Segmente des Video-
+Speichers angew„hlt werden.
+  Die Video- Modi sind Herstellerabh„ngig :
+ 640 * 350 / 256
+ 640 * 400 / 256
+ 640 * 480 / 256
+ 800 * 600 / 256
+1024 * 768 / 256
+  Der Video- Modus 320 * 200 / 256 kann fr jede VGA- Karte genutzt werden.
+  Das Programm GIF ermittelt anhand der Gr”áe des Bildes den Video- Modus.
+Es wird versucht, die n„chsth”here Aufl”sung zu verwenden, wenn nicht die
+exakte Gr”áe des Bildes als Video- Modus zur Verfgung steht. Existiert keine
+gleichgroáe oder gr”áere Video- Aufl”sung als die Gr”áe des Bildes, wird die
+n„chst kleinere verwandt, die die vorliegende VGA- Karte beherrscht.
+  Ich kann nicht ausschlieáen, daá eventuell einige VGA- Karten- Hersteller
+zwar einen bestimmten VGA- Chip verwenden, aber nicht das vom Chip- Hersteller
+gelieferte BIOS. Somit ist es m”glich, daá trotz korrekter Erkennung des VGA-
+Chips keine hochaufl”senden Video- Modi ansprechbar sind, weil die einfach
+andere Nummern haben, als das Programm GIF vermutet.
+  Ebenso ist niemals auszuschlieáen, daá Neuentwicklungen an VGA- Chips sich
+gar nicht oder ( viel schlimmer ) nur teilweise so verhalten, wie es die der-
+zeit bekannten tun.
+  Es ist auch durchaus m”glich, daá entweder das von mir verwandte Modul oder 
+die von mir selbst programmierten Erweiterungen dazu Fehler enthalten.
+
+  Wenn Sie Probleme mit dem Programm GIF haben, kann ich Ihnen nur raten, mir
+diese Probleme zu schildern. Ohne Kenntnis von einem Problem zu haben, kann
+ich es zwangsl„ufig auch nicht beseitigen.
+  Auch wenn ich nicht selbst der VGA- Papst bin, bin ich es schon seit l„ng-
+erer Zeit leid, daá jeder, der weiá, wie man die zu recht hochgesch„tzten
+Super- VGA- Modi benutzen kann, dies Geheimnis besser htet, als es die
+NATO mit ihren milit„rischen Geheimnissen zu tun pflegt.
+  Angesichts von Programmen wie z.B. FRACTINT oder GDS ist es eigentlich der
+absolute Hohn, daá ca. 99% aller Programme, die berhaupt h”here Video- Auf-
+l”sungen als 320 * 200 oder/und 256 Farben untersttzen, auf teilweise hoch-
+komplizierte Art und Weise installiert werden mssen.
+
+  Das Programm GIF untersttzt definiv nicht die Aufl”sung 512 * 480 Pixel,
+die von einigen VGA- Karten Herstellern angeboten wird.
+  Ebenso vermeide ich wissentlich die Aufl”sung 360 * 400 Pixel, die jede
+VGA- Karte ( auch die originale von IBM ) beherrscht. Diese Aufl”sung ist
+gut geeignet fr Bilder, die in eben dieser Aufl”sung erstellt wurden. Bilder,
+die in anderen Aufl”sungen erstellt wurden, werden bei einer Darstellung auf
+360 * 400 Pixeln extrem verzerrt. Nebenbei bemerkt ist in dieser Aufl”sung 
+auch der sehr schnelle Blockmove vom normalen Arbeitsspeicher in die VGA-
+Karte nicht m”glich, den ich im Programm GIF benutze.
+
+
+
+  Anbei die Anschrift von Computer Solutions. Die Nummer der Diskette, die
+das VGA Kit enth„lt, kenne ich leider nicht.
+
+(C)omputer (S)olutions Software (L)ibrary (TM) ûEntscheidung fr die Profis. 
+    Postfach 1180 ù D-8018 Grafing/Mnchen ù Telefon 08092/5018 Zentrale     
+   Fax 08092/31727 ù BTX 080925018 ù E-MAIL: CompuServe EasyPlex 76234,3577  
+
+
+

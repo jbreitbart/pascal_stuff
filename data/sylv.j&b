@@ -1,0 +1,224 @@
+ The following four packing items are general-purpose colored
+ sparks.
+
+packing
+red spark
+noflash
+red
+150
+3
+end
+
+packing
+blue spark
+noflash
+blue
+150
+3
+end
+
+packing
+green spark
+noflash
+green
+150
+3
+end
+
+packing
+yellow spark
+noflash
+yellow
+150
+3
+end
+
+ This packing is part of chrys; it flashes after a bit.
+
+packing
+bomb
+flash
+green
+150
+3
+green spark
+10
+0
+1
+end
+
+ A classic 'chrysanthemum' firework with a few bombs.
+
+firework
+chrys
+flash
+blue
+125
+3
+red spark
+750
+75
+7
+bomb
+5
+3
+3
+end
+
+ The following two are bangers for splash.
+
+packing
+blitz
+flash
+green
+100
+3
+blue spark
+50
+25
+4
+end
+
+packing
+green wow
+flash
+red
+150
+3
+green spark
+30
+5
+6
+end
+
+ This firework is like a 'grand finale.'
+
+firework
+splash
+flash
+yellow
+150
+3
+green wow
+5
+3
+3
+blitz
+5
+3
+3
+red spark
+125
+25
+5
+end
+
+ A green dot that dissolves into a blue shower.  Part of 'waterfall.'
+
+packing
+shower
+noflash
+green
+125
+3
+blue spark
+10
+2
+1
+end
+
+ Produces many 'showers.'
+
+firework
+waterfall
+flash
+blue
+150
+3
+shower
+50
+5
+3
+end
+
+ A recursive packing that continuously emits red sparks.
+
+packing
+bam
+noflash
+yellow
+10
+4
+red spark
+3
+1
+2
+bam
+1
+0
+0
+end
+
+ The launch pad for the above.
+
+firework
+bammo
+flash
+yellow
+150
+3
+bam
+7
+2
+3
+end
+
+ A double-chrysanthemum that releases green and blue sparks.
+
+firework
+double
+flash
+yellow
+150
+3
+blue spark
+150
+50
+5
+green spark
+150
+50
+3
+end
+
+ A yellow chrys packing that waits for a bit.
+
+packing
+delay
+flash
+yellow
+150
+3
+yellow spark
+200
+50
+5
+end
+
+ Explodes, and drops the above time bomb.
+
+firework
+delayed
+flash
+red
+150
+3
+delay
+1
+0
+0
+green spark
+250
+50
+5
+end
